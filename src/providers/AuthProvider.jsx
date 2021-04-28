@@ -11,20 +11,20 @@ const AuthProvider = ({ children }) => {
     if (tokenFromStorage) setToken(tokenFromStorage);
   }, []);
 
-  const login = (token) => {
+  const logIn = (token) => {
     localStorage.setItem("token", token);
     setToken(token);
     history.push("/");
   };
 
-  const logout = () => {
+  const logOut = () => {
     localStorage.removeItem("token");
     setToken(null);
     history.push("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ token, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );

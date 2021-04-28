@@ -4,5 +4,5 @@ import { Card } from "@material-ui/core";
 export const LoginCard = styled(Card)({
   padding: "20px 35px 20px 35px",
   width: 390,
-  height: 400,
+  minHeight: 408,
 });
