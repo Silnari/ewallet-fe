@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 const AuthContext = createContext({ token: null });
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("");
+  const [registerSucess, setRegisterSuccess] = useState("");
   const history = useHistory();
 
   useEffect(() => {
@@ -24,7 +25,9 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, logIn, logOut }}>
+    <AuthContext.Provider
+      value={{ token, logIn, logOut, registerSucess, setRegisterSuccess }}
+    >
       {children}
     </AuthContext.Provider>
   );

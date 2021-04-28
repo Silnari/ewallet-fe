@@ -1,4 +1,10 @@
-import { Button, CardContent, Grid, TextField } from "@material-ui/core";
+import {
+  Button,
+  CardContent,
+  Grid,
+  Snackbar,
+  TextField,
+} from "@material-ui/core";
 import { useHistory } from "react-router";
 import { LoginContainer } from "../components/LoginContainer";
 import { LoginCard } from "../components/LoginCard";
@@ -6,6 +12,9 @@ import LoginTitle from "../components/LoginTitle";
 import axios from "../axios-instance";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { Alert } from "@material-ui/lab";
+import { useState } from "react";
+import { useAuth } from "../providers/AuthProvider";
 
 const validationSchema = yup.object({
   email: yup
@@ -20,20 +29,29 @@ const validationSchema = yup.object({
 });
 
 function Register() {
+  const [errorMessage, setErrorMessage] = useState("");
+  const { setRegisterSuccess } = useAuth();
   const doRegister = async (values) => {
     const { login, email, password } = values;
 
-    const response = await axios({
-      method: "post",
-      url: "api/user/register",
-      data: {
-        login,
-        email,
-        password,
-      },
-    });
-    if (response.status === 200) {
-      history.push("login/");
+    try {
+      const response = await axios({
+        method: "post",
+        url: "api/user/register",
+        data: {
+          login,
+          email,
+          password,
+        },
+      });
+      if (response.status === 200) {
+        setRegisterSuccess("User registered successfully");
+        history.push("login/");
+      }
+    } catch (err) {
+      if (err.response.status === 400)
+        setErrorMessage("Login is already taken");
+      else setErrorMessage("Could not register user");
     }
   };
 
@@ -113,6 +131,15 @@ function Register() {
           </form>
         </CardContent>
       </LoginCard>
+      <Snackbar
+        open={errorMessage}
+        autoHideDuration={7000}
+        onClose={() => setErrorMessage("")}
+      >
+        <Alert severity="error" onClose={() => setErrorMessage("")}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </LoginContainer>
   );
 }

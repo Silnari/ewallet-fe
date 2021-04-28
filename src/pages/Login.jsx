@@ -1,29 +1,44 @@
 import { useAuth } from "../providers/AuthProvider";
-import { Button, CardContent, Grid, TextField } from "@material-ui/core";
+import {
+  Button,
+  CardContent,
+  Grid,
+  TextField,
+  Snackbar,
+} from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import LoginTitle from "../components/LoginTitle";
 import { LoginContainer } from "../components/LoginContainer";
 import { LoginCard } from "../components/LoginCard";
 import axios from "../axios-instance";
 import { useFormik } from "formik";
+import { Alert } from "@material-ui/lab";
+import { useState } from "react";
 
 function Login() {
-  const { logIn } = useAuth();
+  const [errorMessage, setErrorMessage] = useState("");
+  const { logIn, registerSucess, setRegisterSuccess } = useAuth();
   const history = useHistory();
 
   const doLogin = async (values) => {
     const { login, password } = values;
 
-    const response = await axios({
-      method: "post",
-      url: "api/user/authenticate",
-      data: {
-        login,
-        password,
-      },
-    });
-    if (response.status === 200) {
-      logIn(response.data);
+    try {
+      const response = await axios({
+        method: "post",
+        url: "api/user/authenticate",
+        data: {
+          login,
+          password,
+        },
+      });
+      if (response.status === 200) {
+        logIn(response.data);
+      }
+    } catch (err) {
+      if (err.response.status === 401)
+        setErrorMessage("Invalid username or password");
+      else setErrorMessage("Could not login");
     }
   };
 
@@ -91,6 +106,24 @@ function Login() {
           </form>
         </CardContent>
       </LoginCard>
+      <Snackbar
+        open={errorMessage}
+        autoHideDuration={7000}
+        onClose={() => setErrorMessage("")}
+      >
+        <Alert severity="error" onClose={() => setErrorMessage("")}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={registerSucess}
+        autoHideDuration={7000}
+        onClose={() => setRegisterSuccess("")}
+      >
+        <Alert severity="success" onClose={() => setRegisterSuccess("")}>
+          {registerSucess}
+        </Alert>
+      </Snackbar>
     </LoginContainer>
   );
 }
