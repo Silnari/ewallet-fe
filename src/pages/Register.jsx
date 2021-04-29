@@ -127,6 +127,16 @@ export default function Register() {
                   Register
                 </Button>
               </Grid>
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  fullWidth={true}
+                  onClick={() => history.push("/login")}
+                >
+                  Already have account? Log in
+                </Button>
+              </Grid>
             </Grid>
           </form>
         </CardContent>
