@@ -14,19 +14,37 @@ import PageTitle from "../components/PageTitle";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsIcon from "@material-ui/icons/Settings";
+import { makeStyles } from "@material-ui/styles";
+import { green } from "@material-ui/core/colors";
+import { useState } from "react";
+import AddAccountDialog from "../components/AddAccountDialog";
+
+const useStyles = makeStyles((theme) => ({
+  accountAvatar: {
+    backgroundColor: green[500],
+  },
+  accountItem: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    marginBottom: 5,
+  },
+}));
 
 export default function ManageAccount() {
+  const [addAccountOpen, setAddAccountOpen] = useState(false);
+  const classes = useStyles();
+
   return (
-    <Container maxWidth="xs">
-      <Grid container direction="column" spacing={3}>
+    <Container maxWidth="sm">
+      <Grid container align="center" direction="column" spacing={3}>
         <Grid item>
           <PageTitle title="Manage accounts" />
         </Grid>
         <Grid item>
           <List>
-            <ListItem>
+            <ListItem className={classes.accountItem}>
               <ListItemAvatar>
-                <Avatar>
+                <Avatar className={classes.accountAvatar} variant="rounded">
                   <AccountBalanceWalletIcon />
                 </Avatar>
               </ListItemAvatar>
@@ -43,9 +61,9 @@ export default function ManageAccount() {
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
-            <ListItem>
+            <ListItem className={classes.accountItem}>
               <ListItemAvatar>
-                <Avatar>
+                <Avatar className={classes.accountAvatar} variant="rounded">
                   <AccountBalanceWalletIcon />
                 </Avatar>
               </ListItemAvatar>
@@ -62,9 +80,9 @@ export default function ManageAccount() {
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
-            <ListItem>
+            <ListItem className={classes.accountItem}>
               <ListItemAvatar>
-                <Avatar>
+                <Avatar className={classes.accountAvatar} variant="rounded">
                   <AccountBalanceWalletIcon />
                 </Avatar>
               </ListItemAvatar>
@@ -84,11 +102,17 @@ export default function ManageAccount() {
           </List>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="primary" fullWidth={true}>
+          <Button
+            size="large"
+            variant="contained"
+            color="primary"
+            onClick={() => setAddAccountOpen(true)}
+          >
             Add account
           </Button>
         </Grid>
       </Grid>
+      <AddAccountDialog open={addAccountOpen} setOpen={setAddAccountOpen} />
     </Container>
   );
 }

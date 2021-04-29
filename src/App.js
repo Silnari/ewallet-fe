@@ -19,7 +19,7 @@ const theme = createMuiTheme({
       main: "#cdb68e",
     },
     background: {
-      default: "#f4f4f4",
+      default: "#fafafa",
     },
   },
 });
