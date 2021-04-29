@@ -15,7 +15,7 @@ import { useFormik } from "formik";
 import { Alert } from "@material-ui/lab";
 import { useState } from "react";
 
-function Login() {
+export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
   const { logIn, registerSucess, setRegisterSuccess } = useAuth();
   const history = useHistory();
@@ -64,7 +64,7 @@ function Login() {
                   id="login"
                   label="Login"
                   variant="outlined"
-                  fullWidth="true"
+                  fullWidth={true}
                   size="small"
                   value={formik.values.login}
                   onChange={formik.handleChange}
@@ -76,7 +76,7 @@ function Login() {
                   type="password"
                   label="Password"
                   variant="outlined"
-                  fullWidth="true"
+                  fullWidth={true}
                   size="small"
                   onChange={formik.handleChange}
                   value={formik.values.password}
@@ -87,7 +87,7 @@ function Login() {
                   type="submit"
                   variant="contained"
                   color="primary"
-                  fullWidth="true"
+                  fullWidth={true}
                 >
                   Login
                 </Button>
@@ -96,7 +96,7 @@ function Login() {
                 <Button
                   variant="outlined"
                   color="primary"
-                  fullWidth="true"
+                  fullWidth={true}
                   onClick={() => history.push("/register")}
                 >
                   No account? Register
@@ -107,7 +107,7 @@ function Login() {
         </CardContent>
       </LoginCard>
       <Snackbar
-        open={errorMessage}
+        open={!!errorMessage}
         autoHideDuration={7000}
         onClose={() => setErrorMessage("")}
       >
@@ -116,7 +116,7 @@ function Login() {
         </Alert>
       </Snackbar>
       <Snackbar
-        open={registerSucess}
+        open={!!registerSucess}
         autoHideDuration={7000}
         onClose={() => setRegisterSuccess("")}
       >
@@ -127,5 +127,3 @@ function Login() {
     </LoginContainer>
   );
 }
-
-export default Login;

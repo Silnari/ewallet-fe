@@ -28,7 +28,7 @@ const validationSchema = yup.object({
     .required("Password is required"),
 });
 
-function Register() {
+export default function Register() {
   const [errorMessage, setErrorMessage] = useState("");
   const { setRegisterSuccess } = useAuth();
   const doRegister = async (values) => {
@@ -80,7 +80,7 @@ function Register() {
                   id="login"
                   label="Login"
                   variant="outlined"
-                  fullWidth="true"
+                  fullWidth={true}
                   size="small"
                   value={formik.values.login}
                   onChange={formik.handleChange}
@@ -93,7 +93,7 @@ function Register() {
                   id="email"
                   label="Email"
                   variant="outlined"
-                  fullWidth="true"
+                  fullWidth={true}
                   size="small"
                   value={formik.values.email}
                   onChange={formik.handleChange}
@@ -107,7 +107,7 @@ function Register() {
                   type="password"
                   label="Password"
                   variant="outlined"
-                  fullWidth="true"
+                  fullWidth={true}
                   size="small"
                   value={formik.values.password}
                   onChange={formik.handleChange}
@@ -122,7 +122,7 @@ function Register() {
                   type="submit"
                   variant="contained"
                   color="primary"
-                  fullWidth="true"
+                  fullWidth={true}
                 >
                   Register
                 </Button>
@@ -132,7 +132,7 @@ function Register() {
         </CardContent>
       </LoginCard>
       <Snackbar
-        open={errorMessage}
+        open={!!errorMessage}
         autoHideDuration={7000}
         onClose={() => setErrorMessage("")}
       >
@@ -143,5 +143,3 @@ function Register() {
     </LoginContainer>
   );
 }
-
-export default Register;
