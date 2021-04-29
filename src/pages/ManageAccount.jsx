@@ -2,6 +2,7 @@ import {
   Avatar,
   Button,
   Container,
+  Dialog,
   Grid,
   IconButton,
   List,
