@@ -1,4 +1,12 @@
-import { Divider, Drawer, List, Typography } from "@material-ui/core";
+import {
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 
@@ -37,7 +45,12 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export default function LeftDrawer({ drawerOpen }) {
+export default function LeftDrawer({
+  drawerOpen,
+  items,
+  currentItem,
+  setCurrentItem,
+}) {
   const classes = useStyle();
 
   return (
@@ -60,7 +73,19 @@ export default function LeftDrawer({ drawerOpen }) {
         </Typography>
       </div>
       <Divider />
-      <List></List>
+      <List>
+        {Object.entries(items).map(([key, item]) => (
+          <ListItem
+            button
+            onClick={() => setCurrentItem(key)}
+            key={key}
+            selected={currentItem === key}
+          >
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
     </Drawer>
   );
 }
