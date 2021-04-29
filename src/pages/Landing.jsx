@@ -1,17 +1,23 @@
-import { useAuth } from "../providers/AuthProvider";
-import { Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import HeadLayout from "../components/HeadLayout";
 
-function Landing() {
-  const { logOut } = useAuth();
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+}));
+
+export default function Landing() {
+  const classes = useStyles();
 
   return (
-    <>
-      <h1>Hello</h1>
-      <Button variant="contained" color="primary" onClick={logOut}>
-        Logout
-      </Button>
-    </>
+    <div className={classes.root}>
+      <HeadLayout />
+      <main className={classes.content}></main>
+    </div>
   );
 }
-
-export default Landing;
