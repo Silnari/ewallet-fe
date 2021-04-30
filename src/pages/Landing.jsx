@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
-import HeadLayout from "../components/HeadLayout";
+import HeadLayout from "../components/core/layout/HeadLayout";
 import Account from "./Account";
 import ManageAccount from "./ManageAccount";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";

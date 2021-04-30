@@ -7,9 +7,9 @@ import {
   Snackbar,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import LoginTitle from "../components/LoginTitle";
-import { LoginContainer } from "../components/LoginContainer";
-import { LoginCard } from "../components/LoginCard";
+import LoginTitle from "../components/login/LoginTitle";
+import { LoginContainer } from "../components/login/LoginContainer";
+import { LoginCard } from "../components/login/LoginCard";
 import axios from "../axios-instance";
 import { useFormik } from "formik";
 import { Alert } from "@material-ui/lab";

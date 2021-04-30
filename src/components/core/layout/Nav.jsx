@@ -8,7 +8,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
-import { useAuth } from "../providers/AuthProvider";
+import { useAuth } from "../../../providers/AuthProvider";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const drawerWidth = 240;

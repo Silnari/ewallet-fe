@@ -1,4 +1,4 @@
-import PageTitle from "../components/PageTitle";
+import PageTitle from "../components/core/PageTitle";
 
 export default function Account() {
   return (

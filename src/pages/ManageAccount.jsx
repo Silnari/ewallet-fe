@@ -10,18 +10,18 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from "@material-ui/core";
-import PageTitle from "../components/PageTitle";
+import PageTitle from "../components/core/PageTitle";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { makeStyles } from "@material-ui/styles";
 import { green } from "@material-ui/core/colors";
 import { useEffect, useState } from "react";
-import AddAccountDialog from "../components/AddAccountDialog";
-import ModifyAccountDialog from "../components/ModifyAccountDialog";
+import AddAccountDialog from "../components/core/dialog/AddAccountDialog";
+import ModifyAccountDialog from "../components/core/dialog/ModifyAccountDialog";
 import axios from "../axios-instance";
 import { useAuth } from "../providers/AuthProvider";
-import ConfirmDialog from "../components/ConfirmDialog";
+import ConfirmDialog from "../components/core/dialog/ConfirmDialog";
 
 const useStyles = makeStyles((theme) => ({
   accountAvatar: {
