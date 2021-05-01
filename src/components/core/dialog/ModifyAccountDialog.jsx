@@ -19,10 +19,6 @@ const validationSchema = yup.object({
 });
 
 export default function ModifyAccountDialog({ open, setOpen, account }) {
-  const { name, startBalance } = account
-    ? account
-    : { name: "", startBalance: 0 };
-
   const modifyAccount = async (values) => {
     const { name, startBalance } = values;
 
@@ -40,10 +36,8 @@ export default function ModifyAccountDialog({ open, setOpen, account }) {
   };
 
   const formik = useFormik({
-    initialValues: {
-      name: name,
-      startBalance: startBalance,
-    },
+    enableReinitialize: true,
+    initialValues: account ? account : { name: "", startBalance: "" },
     validationSchema: validationSchema,
     onSubmit: modifyAccount,
   });
