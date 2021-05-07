@@ -22,6 +22,7 @@ const theme = createMuiTheme({
       default: "#fafafa",
     },
   },
+  white: "#fff",
 });
 
 function App() {

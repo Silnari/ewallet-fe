@@ -1,5 +1,5 @@
 import { Box, Container, Grid, IconButton } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "../components/core/DatePicker";
 import moment from "moment";
 import RemoveCircleOutlineOutlinedIcon from "@material-ui/icons/RemoveCircleOutlineOutlined";
@@ -9,6 +9,8 @@ import { green, red } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/styles";
 import AddTransactionDialog from "../components/core/dialog/AddTransactionDialog";
 import { useAccountList } from "../providers/AccountListProvider";
+import axios from "../axios-instance";
+import TransactionList from "../components/core/TransactionList";
 
 const useStyles = makeStyles((theme) => ({
   incomeButton: {
@@ -26,7 +28,21 @@ export default function Account() {
   const [addTransactionOpen, setAddTransactionOpen] = useState(false);
   const [transactionType, setTransactionType] = useState("INCOME");
   const { accountList, selectedAccount } = useAccountList();
+  const [transactionList, setTransactionList] = useState([]);
   const classes = useStyles();
+
+  const getTransactionList = async () => {
+    const response = await axios({
+      method: "get",
+      url: `api/transaction/${selectedAccount?.id}`,
+    });
+    if (response.status === 200) {
+      setTransactionList(response.data);
+    }
+  };
+
+  // eslint-disable-next-line
+  useEffect(() => getTransactionList(), [selectedAccount]);
 
   const nextDate = () => {
     var m = moment(date);
@@ -96,6 +112,14 @@ export default function Account() {
               <RemoveCircleOutlineOutlinedIcon fontSize="large" />
             </IconButton>
           </Box>
+        </Grid>
+        <Grid item>
+          <Container maxWidth="sm">
+            <TransactionList
+              sortBy="category"
+              transactionList={transactionList}
+            />
+          </Container>
         </Grid>
       </Grid>
       <AddTransactionDialog
