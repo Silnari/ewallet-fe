@@ -8,6 +8,7 @@ import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRoun
 import { green, red } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/styles";
 import AddTransactionDialog from "../components/core/dialog/AddTransactionDialog";
+import { useAccountList } from "../providers/AccountListProvider";
 
 const useStyles = makeStyles((theme) => ({
   incomeButton: {
@@ -24,6 +25,7 @@ export default function Account() {
   const [periodOfTime, setPeriodOfTime] = useState("M");
   const [addTransactionOpen, setAddTransactionOpen] = useState(false);
   const [transactionType, setTransactionType] = useState("INCOME");
+  const { accountList, selectedAccount } = useAccountList();
   const classes = useStyles();
 
   const nextDate = () => {
@@ -100,6 +102,8 @@ export default function Account() {
         open={addTransactionOpen}
         setOpen={setAddTransactionOpen}
         transactionType={transactionType}
+        accountList={accountList}
+        selectedAccount={selectedAccount}
       />
     </Container>
   );

@@ -1,10 +1,11 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "../axios-instance";
 import { useAuth } from "./AuthProvider";
 
-const AccountListContext = createContext({ accountList: [] });
+const AccountListContext = createContext();
 export default function AccountListProvider({ children }) {
   const [accountList, setAccountList] = useState([]);
+  const [selectedAccount, setSelectedAccount] = useState(null);
   const { token } = useAuth();
 
   const getAccountList = async () => {
@@ -14,11 +15,24 @@ export default function AccountListProvider({ children }) {
     });
     if (response.status === 200) {
       setAccountList(response.data);
+      setSelectedAccount(response.data[0]);
     }
   };
 
+  useEffect(() => {
+    getAccountList();
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <AccountListContext.Provider value={{ accountList, getAccountList }}>
+    <AccountListContext.Provider
+      value={{
+        accountList,
+        getAccountList,
+        selectedAccount,
+        setSelectedAccount,
+      }}
+    >
       {children}
     </AccountListContext.Provider>
   );
