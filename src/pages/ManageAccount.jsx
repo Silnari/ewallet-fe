@@ -20,8 +20,8 @@ import { useEffect, useState } from "react";
 import AddAccountDialog from "../components/core/dialog/AddAccountDialog";
 import ModifyAccountDialog from "../components/core/dialog/ModifyAccountDialog";
 import axios from "../axios-instance";
-import { useAuth } from "../providers/AuthProvider";
 import ConfirmDialog from "../components/core/dialog/ConfirmDialog";
+import { useAccountList } from "../providers/AccountListProvider";
 
 const useStyles = makeStyles((theme) => ({
   accountAvatar: {
@@ -39,19 +39,8 @@ export default function ManageAccount() {
   const [modifyAccountOpen, setModifyAccountOpen] = useState(false);
   const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [accountList, setAccountList] = useState([]);
+  const { accountList, getAccountList } = useAccountList();
   const classes = useStyles();
-  const { token } = useAuth();
-
-  const getAccountList = async () => {
-    const response = await axios({
-      method: "get",
-      url: `api/account/${token}`,
-    });
-    if (response.status === 200) {
-      setAccountList(response.data);
-    }
-  };
 
   const deleteAccount = async (id) => {
     const response = await axios({
