@@ -4,21 +4,32 @@ import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import EventIcon from "@material-ui/icons/Event";
 import moment from "moment";
 
-export default function TransactionList({ transactionList, sortBy }) {
-  const getByTransactionType = (transactionType) =>
-    transactionList.filter(
+export default function TransactionList({
+  transactionList,
+  sortBy,
+  date,
+  periodOfTime,
+}) {
+  const getPeriod = () => {
+    if (periodOfTime === "w") return "isoWeek";
+    if (periodOfTime === "M") return "month";
+    return "year";
+  };
+  const getByTransactionType = (transactionType) => {
+    const filteredByDate = transactionList.filter((transaction) =>
+      moment(transaction.date).isSame(moment(date), getPeriod())
+    );
+
+    return filteredByDate.filter(
       (transaction) => transaction.transactionType === transactionType
     );
+  };
 
   const getSortByList = (transactionList) => {
     var _ = require("lodash");
     const sortByList = _.orderBy(
       _.groupBy(transactionList, sortBy),
-      [
-        function (item) {
-          return _.sumBy(item, "value");
-        },
-      ],
+      [(item) => _.sumBy(item, "value")],
       "desc"
     );
     return _.map(sortByList, (x) => _.orderBy(x, "value", "desc"));

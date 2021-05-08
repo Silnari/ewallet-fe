@@ -167,6 +167,8 @@ export default function Account() {
                 <TransactionList
                   sortBy={sortBy}
                   transactionList={transactionList}
+                  date={date}
+                  periodOfTime={periodOfTime}
                 />
               </Container>
             </Grid>

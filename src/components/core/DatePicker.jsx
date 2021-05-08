@@ -41,9 +41,9 @@ export default function DatePicker({
     var m = moment(date);
     if (periodOfTime === "w")
       return (
-        m.format("MMMM Do") +
+        m.startOf("isoweek").format("MMMM Do") +
         " - " +
-        m.clone().add(7, "d").format("MMMM Do[, ]YYYY")
+        m.clone().startOf("isoweek").add(6, "d").format("MMMM Do[, ]YYYY")
       );
     if (periodOfTime === "M") return m.format("MMMM[, ]YYYY");
     if (periodOfTime === "y") return m.format("YYYY");
