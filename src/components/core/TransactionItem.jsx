@@ -10,8 +10,7 @@ import {
 import { useState } from "react";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import { green, grey, red } from "@material-ui/core/colors";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { makeStyles } from "@material-ui/styles";
 import moment from "moment";
 
@@ -22,42 +21,78 @@ const useStyles = makeStyles((theme) => ({
   transactionSubItem: {
     textAlign: "right",
   },
-  transactionItem: {
+  icnomeItem: {
+    color: theme.green,
     backgroundColor: theme.white,
     borderRadius: 20,
     marginBottom: 5,
   },
-  transactionAvatar: {
-    backgroundColor: theme.palette.secondary.main,
+  outcomeItem: {
+    color: theme.red,
+    backgroundColor: theme.white,
+    borderRadius: 20,
+    marginBottom: 5,
+  },
+  incomeAvatar: {
+    backgroundColor: theme.green,
+  },
+  outcomeAvatar: {
+    backgroundColor: theme.red,
+  },
+  incomeIcon: {
+    color: theme.green,
+  },
+  outcomeIcon: {
+    color: theme.red,
   },
 }));
 
-export default function TransactionItem({ header, icon, transactionList }) {
+export default function TransactionItem({
+  header,
+  icon,
+  transactionList,
+  sortBy,
+  type,
+}) {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
-  const getColor = (transactionType) => {
-    if (transactionType === "INCOME") return green[500];
-    if (transactionType === "OUTCOME") return red[500];
-    return grey[900];
+  const getSubField = (transaction) => {
+    if (sortBy === "category")
+      return moment(transaction.date).format("dddd, MMMM Do YYYY");
+    return transaction.category;
+  };
+
+  const getSum = (transactionItem) => {
+    var _ = require("lodash");
+    return _.sumBy(transactionItem, "value");
   };
 
   return (
     <>
       <ListItem
-        key={header}
-        className={classes.transactionItem}
+        key={header + type}
+        className={type === "INCOME" ? classes.icnomeItem : classes.outcomeItem}
         button
         onClick={() => setOpen(!open)}
       >
         <ListItemAvatar>
-          <Avatar className={classes.transactionAvatar} variant="rounded">
+          <Avatar
+            className={
+              type === "INCOME" ? classes.incomeAvatar : classes.outcomeAvatar
+            }
+            variant="rounded"
+          >
             {icon}
           </Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={header}
           secondary={`Transactions: ${transactionList?.length}`}
+        />
+        <ListItemText
+          className={classes.transactionSubItem}
+          primary={`${getSum(transactionList)} zł`}
         />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
@@ -66,8 +101,11 @@ export default function TransactionItem({ header, icon, transactionList }) {
           {transactionList.map((transaction) => (
             <ListItem key={transaction.id} className={classes.nested}>
               <ListItemIcon>
-                <PlayArrowIcon
-                  style={{ color: getColor(transaction.transactionType) }}
+                <FiberManualRecordIcon
+                  fontSize="small"
+                  className={
+                    type === "INCOME" ? classes.incomeIcon : classes.outcomeIcon
+                  }
                 />
               </ListItemIcon>
               <ListItemText
@@ -76,9 +114,7 @@ export default function TransactionItem({ header, icon, transactionList }) {
               />
               <ListItemText
                 className={classes.transactionSubItem}
-                secondary={moment(transaction.date).format(
-                  "dddd, MMMM Do YYYY"
-                )}
+                secondary={getSubField(transaction)}
               />
             </ListItem>
           ))}

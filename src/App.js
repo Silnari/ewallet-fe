@@ -9,6 +9,7 @@ import {
   CssBaseline,
   MuiThemeProvider,
 } from "@material-ui/core";
+import { green, red } from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
   palette: {
@@ -23,6 +24,8 @@ const theme = createMuiTheme({
     },
   },
   white: "#fff",
+  green: green[500],
+  red: red[500],
 });
 
 function App() {

@@ -1,9 +1,17 @@
-import { Box, Container, Grid, IconButton } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  Grid,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
 import { useEffect, useState } from "react";
 import DatePicker from "../components/core/DatePicker";
 import moment from "moment";
 import RemoveCircleOutlineOutlinedIcon from "@material-ui/icons/RemoveCircleOutlineOutlined";
 import LoopRoundedIcon from "@material-ui/icons/LoopRounded";
+import FolderOpenIcon from "@material-ui/icons/FolderOpen";
+import EventIcon from "@material-ui/icons/Event";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import { green, red } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/styles";
@@ -19,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
   outcomeButton: {
     color: red[500],
   },
+  sortButton: {
+    color: theme.palette.primary.main,
+    backgroundColor: theme.white,
+  },
 }));
 
 export default function Account() {
@@ -29,9 +41,11 @@ export default function Account() {
   const [transactionType, setTransactionType] = useState("INCOME");
   const { accountList, selectedAccount } = useAccountList();
   const [transactionList, setTransactionList] = useState([]);
+  const [sortBy, setSortBy] = useState("category");
   const classes = useStyles();
 
   const getTransactionList = async () => {
+    if (!selectedAccount) return;
     const response = await axios({
       method: "get",
       url: `api/transaction/${selectedAccount?.id}`,
@@ -115,8 +129,26 @@ export default function Account() {
         </Grid>
         <Grid item>
           <Container maxWidth="sm">
+            <Box
+              mt={2}
+              display="flex"
+              flexDirection="row"
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <Typography>Sort by {sortBy}&nbsp;</Typography>
+              <IconButton
+                className={classes.sortButton}
+                size="small"
+                onClick={() =>
+                  setSortBy(sortBy === "date" ? "category" : "date")
+                }
+              >
+                {sortBy === "date" ? <FolderOpenIcon /> : <EventIcon />}
+              </IconButton>
+            </Box>
             <TransactionList
-              sortBy="category"
+              sortBy={sortBy}
               transactionList={transactionList}
             />
           </Container>
