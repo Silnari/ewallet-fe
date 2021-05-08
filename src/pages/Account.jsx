@@ -84,6 +84,7 @@ export default function Account() {
 
   const changePeriodOfTime = (period) => {
     setPeriodOfTime(period);
+    setIsNextAvaible(false);
     setDate(new Date());
   };
 
