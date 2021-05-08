@@ -8,6 +8,17 @@ export default function AccountListProvider({ children }) {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const { token } = useAuth();
 
+  const getAccountListAndSetSelected = async () => {
+    const response = await axios({
+      method: "get",
+      url: `api/account/${token}`,
+    });
+    if (response.status === 200) {
+      setAccountList(response.data);
+      setSelectedAccount(response.data[0]);
+    }
+  };
+
   const getAccountList = async () => {
     const response = await axios({
       method: "get",
@@ -15,12 +26,11 @@ export default function AccountListProvider({ children }) {
     });
     if (response.status === 200) {
       setAccountList(response.data);
-      return response.data;
     }
   };
 
   useEffect(() => {
-    setSelectedAccount(getAccountList()[0]);
+    getAccountListAndSetSelected();
     // eslint-disable-next-line
   }, []);
 

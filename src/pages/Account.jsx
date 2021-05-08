@@ -20,6 +20,7 @@ import AddTransactionDialog from "../components/core/dialog/AddTransactionDialog
 import { useAccountList } from "../providers/AccountListProvider";
 import TransactionList from "../components/core/TransactionList";
 import { useTransactionList } from "../providers/TransactionListProvider";
+import Loading from "../components/core/Loading";
 
 const useStyles = makeStyles((theme) => ({
   incomeButton: {
@@ -97,91 +98,95 @@ export default function Account() {
 
   return (
     <Container maxWidth="md">
-      <Box display="flex">
-        <Select
-          variant="outlined"
-          className={classes.accountPicker}
-          value={selectedAccount?.id}
-          onChange={handleSelectedAccountChange}
-        >
-          {accountList.map((account) => (
-            <MenuItem key={account.id} value={account.id}>
-              {account.name}
-            </MenuItem>
-          ))}
-        </Select>
-        <Box>
-          <Grid container align="center" direction="column" spcing={3}>
-            <Grid item>
-              <DatePicker
-                date={date}
-                periodOfTime={periodOfTime}
-                setPeriodOfTime={changePeriodOfTime}
-                handleNext={nextDate}
-                handlePrev={prevDate}
-                isNextAvaible={isNextAvaible}
-              />
-            </Grid>
-            <Grid item>
-              <Box mt={1}>
-                <IconButton
-                  className={classes.incomeButton}
-                  onClick={() => addTransaction("INCOME")}
-                >
-                  <AddCircleOutlineRoundedIcon fontSize="large" />
-                </IconButton>
-                <IconButton
-                  color="inherit"
-                  onClick={() => addTransaction("TRANSFER")}
-                >
-                  <LoopRoundedIcon fontSize="large" />
-                </IconButton>
-                <IconButton
-                  className={classes.outcomeButton}
-                  onClick={() => addTransaction("OUTCOME")}
-                >
-                  <RemoveCircleOutlineOutlinedIcon fontSize="large" />
-                </IconButton>
-              </Box>
-            </Grid>
-            <Grid item>
-              <Container maxWidth="sm">
-                <Box
-                  mt={2}
-                  display="flex"
-                  flexDirection="row"
-                  justifyContent="flex-end"
-                  alignItems="center"
-                >
-                  <Typography>Sort by {sortBy}&nbsp;</Typography>
-                  <IconButton
-                    className={classes.sortButton}
-                    size="small"
-                    onClick={() =>
-                      setSortBy(sortBy === "date" ? "category" : "date")
-                    }
-                  >
-                    {sortBy === "date" ? <FolderOpenIcon /> : <EventIcon />}
-                  </IconButton>
-                </Box>
-                <TransactionList
-                  sortBy={sortBy}
-                  transactionList={transactionList}
+      {!selectedAccount ? (
+        <Loading />
+      ) : (
+        <Box display="flex">
+          <Select
+            variant="outlined"
+            className={classes.accountPicker}
+            value={selectedAccount.id}
+            onChange={handleSelectedAccountChange}
+          >
+            {accountList.map((account) => (
+              <MenuItem key={account.id} value={account.id}>
+                {account.name}
+              </MenuItem>
+            ))}
+          </Select>
+          <Box>
+            <Grid container align="center" direction="column" spcing={3}>
+              <Grid item>
+                <DatePicker
                   date={date}
                   periodOfTime={periodOfTime}
+                  setPeriodOfTime={changePeriodOfTime}
+                  handleNext={nextDate}
+                  handlePrev={prevDate}
+                  isNextAvaible={isNextAvaible}
                 />
-              </Container>
+              </Grid>
+              <Grid item>
+                <Box mt={1}>
+                  <IconButton
+                    className={classes.incomeButton}
+                    onClick={() => addTransaction("INCOME")}
+                  >
+                    <AddCircleOutlineRoundedIcon fontSize="large" />
+                  </IconButton>
+                  <IconButton
+                    color="inherit"
+                    onClick={() => addTransaction("TRANSFER")}
+                  >
+                    <LoopRoundedIcon fontSize="large" />
+                  </IconButton>
+                  <IconButton
+                    className={classes.outcomeButton}
+                    onClick={() => addTransaction("OUTCOME")}
+                  >
+                    <RemoveCircleOutlineOutlinedIcon fontSize="large" />
+                  </IconButton>
+                </Box>
+              </Grid>
+              <Grid item>
+                <Container maxWidth="sm">
+                  <Box
+                    mt={2}
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                  >
+                    <Typography>Sort by {sortBy}&nbsp;</Typography>
+                    <IconButton
+                      className={classes.sortButton}
+                      size="small"
+                      onClick={() =>
+                        setSortBy(sortBy === "date" ? "category" : "date")
+                      }
+                    >
+                      {sortBy === "date" ? <FolderOpenIcon /> : <EventIcon />}
+                    </IconButton>
+                  </Box>
+                  <TransactionList
+                    sortBy={sortBy}
+                    transactionList={transactionList}
+                    date={date}
+                    periodOfTime={periodOfTime}
+                  />
+                </Container>
+              </Grid>
             </Grid>
-          </Grid>
+          </Box>
+          <AddTransactionDialog
+            open={addTransactionOpen}
+            setOpen={setAddTransactionOpen}
+            transactionType={transactionType}
+            accountList={accountList}
+            selectedAccount={selectedAccount}
+          />
         </Box>
-        <AddTransactionDialog
-          open={addTransactionOpen}
-          setOpen={setAddTransactionOpen}
-          transactionType={transactionType}
-          accountList={accountList}
-          selectedAccount={selectedAccount}
-        />
-      </Box>
+      )}
     </Container>
   );
 }
