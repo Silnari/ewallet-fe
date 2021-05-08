@@ -65,7 +65,7 @@ export default function TransactionItem({
 
   const getSum = (transactionItem) => {
     var _ = require("lodash");
-    return _.sumBy(transactionItem, "value");
+    return _.round(_.sumBy(transactionItem, "value"), 2);
   };
 
   return (

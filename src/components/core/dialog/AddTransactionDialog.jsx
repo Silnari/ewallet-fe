@@ -53,7 +53,7 @@ export default function AddTransactionDialog({
       },
     });
     if (response.status === 200) {
-      console.log("DODALO");
+      setOpen(false);
     }
   };
 

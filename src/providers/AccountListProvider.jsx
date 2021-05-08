@@ -15,14 +15,18 @@ export default function AccountListProvider({ children }) {
     });
     if (response.status === 200) {
       setAccountList(response.data);
-      setSelectedAccount(response.data[0]);
+      return response.data;
     }
   };
 
   useEffect(() => {
-    getAccountList();
+    setSelectedAccount(getAccountList()[0]);
     // eslint-disable-next-line
   }, []);
+
+  const setSelectedById = (id) => {
+    setSelectedAccount(accountList.find((account) => account.id === id));
+  };
 
   return (
     <AccountListContext.Provider
@@ -30,7 +34,7 @@ export default function AccountListProvider({ children }) {
         accountList,
         getAccountList,
         selectedAccount,
-        setSelectedAccount,
+        setSelectedById,
       }}
     >
       {children}

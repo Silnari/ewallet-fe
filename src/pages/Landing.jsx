@@ -6,6 +6,7 @@ import ManageAccount from "./ManageAccount";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import AccountListProvider from "../providers/AccountListProvider";
+import TransactionListProvider from "../providers/TransactionListProvider";
 
 const pages = {
   account: {
@@ -43,7 +44,9 @@ export default function Landing() {
         setCurrentNavItem={setActivePage}
       />
       <AccountListProvider>
-        <main className={classes.content}>{pages[activePage].body}</main>
+        <TransactionListProvider>
+          <main className={classes.content}>{pages[activePage].body}</main>
+        </TransactionListProvider>
       </AccountListProvider>
     </div>
   );
