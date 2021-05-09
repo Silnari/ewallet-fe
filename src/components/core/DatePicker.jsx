@@ -10,6 +10,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { makeStyles } from "@material-ui/styles";
 import moment from "moment";
+import { useState } from "react";
 
 const useStyles = makeStyles(() => ({
   dateBox: {
@@ -29,12 +30,11 @@ const useStyles = makeStyles(() => ({
 
 export default function DatePicker({
   date,
-  handleNext,
-  handlePrev,
+  setDate,
   periodOfTime,
   setPeriodOfTime,
-  isNextAvaible,
 }) {
+  const [isNextAvaible, setIsNextAvaible] = useState(false);
   const classes = useStyles();
 
   const printDate = (date, periodOfTime) => {
@@ -49,8 +49,35 @@ export default function DatePicker({
     if (periodOfTime === "y") return m.format("YYYY");
   };
 
+  const nextDate = () => {
+    var m = moment(date);
+
+    setDate(
+      periodOfTime === "d"
+        ? m.add(7, periodOfTime).toDate()
+        : m.add(1, periodOfTime).toDate()
+    );
+
+    if (moment(new Date()).isSame(m, "day")) setIsNextAvaible(false);
+  };
+
+  const prevDate = () => {
+    var m = moment(date);
+
+    setDate(
+      periodOfTime === "d"
+        ? m.subtract(7, periodOfTime).toDate()
+        : m.subtract(1, periodOfTime).toDate()
+    );
+
+    setIsNextAvaible(true);
+  };
+
   const handlePeriodOfTimeChange = (event) => {
-    setPeriodOfTime(event.target.value);
+    const period = event.target.value;
+    setPeriodOfTime(period);
+    setIsNextAvaible(false);
+    setDate(new Date());
   };
 
   return (
@@ -69,7 +96,7 @@ export default function DatePicker({
       </Grid>
       <Grid item>
         <Grid container direction="row" alignItems="center" justify="center">
-          <IconButton color="inherit" onClick={handlePrev}>
+          <IconButton color="inherit" onClick={prevDate}>
             <ChevronLeftIcon fontSize="large" />
           </IconButton>
           <Box className={classes.dateBox}>
@@ -79,7 +106,7 @@ export default function DatePicker({
           </Box>
           <IconButton
             color="inherit"
-            onClick={handleNext}
+            onClick={nextDate}
             disabled={!isNextAvaible}
           >
             <ChevronRightIcon fontSize="large" />

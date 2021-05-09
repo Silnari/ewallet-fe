@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import DatePicker from "../components/core/DatePicker";
-import moment from "moment";
 import RemoveCircleOutlineOutlinedIcon from "@material-ui/icons/RemoveCircleOutlineOutlined";
 import LoopRoundedIcon from "@material-ui/icons/LoopRounded";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
@@ -45,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Account() {
   const [date, setDate] = useState(new Date());
-  const [isNextAvaible, setIsNextAvaible] = useState(false);
   const [periodOfTime, setPeriodOfTime] = useState("M");
   const [addTransactionOpen, setAddTransactionOpen] = useState(false);
   const [transactionType, setTransactionType] = useState("INCOME");
@@ -56,36 +54,6 @@ export default function Account() {
 
   // eslint-disable-next-line
   useEffect(() => getTransactionList(), [addTransactionOpen]);
-
-  const nextDate = () => {
-    var m = moment(date);
-
-    setDate(
-      periodOfTime === "d"
-        ? m.add(7, periodOfTime).toDate()
-        : m.add(1, periodOfTime).toDate()
-    );
-
-    if (moment(new Date()).isSame(m, "day")) setIsNextAvaible(false);
-  };
-
-  const prevDate = () => {
-    var m = moment(date);
-
-    setDate(
-      periodOfTime === "d"
-        ? m.subtract(7, periodOfTime).toDate()
-        : m.subtract(1, periodOfTime).toDate()
-    );
-
-    setIsNextAvaible(true);
-  };
-
-  const changePeriodOfTime = (period) => {
-    setPeriodOfTime(period);
-    setIsNextAvaible(false);
-    setDate(new Date());
-  };
 
   const addTransaction = (transactionType) => {
     setTransactionType(transactionType);
@@ -119,11 +87,9 @@ export default function Account() {
               <Grid item>
                 <DatePicker
                   date={date}
+                  setDate={setDate}
                   periodOfTime={periodOfTime}
-                  setPeriodOfTime={changePeriodOfTime}
-                  handleNext={nextDate}
-                  handlePrev={prevDate}
-                  isNextAvaible={isNextAvaible}
+                  setPeriodOfTime={setPeriodOfTime}
                 />
               </Grid>
               <Grid item>
