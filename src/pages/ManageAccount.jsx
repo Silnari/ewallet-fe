@@ -1,38 +1,12 @@
-import {
-  Avatar,
-  Button,
-  Container,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
-} from "@material-ui/core";
+import { Button, Container, Grid } from "@material-ui/core";
 import PageTitle from "../components/core/PageTitle";
-import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
-import DeleteIcon from "@material-ui/icons/Delete";
-import SettingsIcon from "@material-ui/icons/Settings";
-import { makeStyles } from "@material-ui/styles";
-import { green } from "@material-ui/core/colors";
 import { useEffect, useState } from "react";
-import AddAccountDialog from "../components/core/dialog/AddAccountDialog";
-import ModifyAccountDialog from "../components/core/dialog/ModifyAccountDialog";
+import AddAccountDialog from "../components/manageAccount/AddAccountDialog";
+import ModifyAccountDialog from "../components/manageAccount/ModifyAccountDialog";
 import axios from "../axios-instance";
-import ConfirmDialog from "../components/core/dialog/ConfirmDialog";
+import ConfirmDialog from "../components/core/ConfirmDialog";
 import { useAccountList } from "../providers/AccountListProvider";
-
-const useStyles = makeStyles((theme) => ({
-  accountAvatar: {
-    backgroundColor: green[500],
-  },
-  accountItem: {
-    backgroundColor: "#fff",
-    borderRadius: 20,
-    marginBottom: 5,
-  },
-}));
+import AccountList from "../components/manageAccount/AccountList";
 
 export default function ManageAccount() {
   const [addAccountOpen, setAddAccountOpen] = useState(false);
@@ -40,7 +14,6 @@ export default function ManageAccount() {
   const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const { accountList, getAccountList } = useAccountList();
-  const classes = useStyles();
 
   const deleteAccount = async (id) => {
     const response = await axios({
@@ -52,20 +25,13 @@ export default function ManageAccount() {
     }
   };
 
-  useEffect(() => {
-    getAccountList();
-    // eslint-disable-next-line
-  }, [addAccountOpen, modifyAccountOpen, deleteAccountOpen]);
+  // eslint-disable-next-line
+  useEffect(() => getAccountList(), [
+    addAccountOpen,
+    modifyAccountOpen,
+    deleteAccountOpen,
+  ]);
 
-  const handleModifyAccount = (account) => {
-    setSelectedAccount(account);
-    setModifyAccountOpen(true);
-  };
-
-  const handleDeleteAccount = (account) => {
-    setSelectedAccount(account);
-    setDeleteAccountOpen(true);
-  };
   return (
     <Container maxWidth="sm">
       <Grid container align="center" direction="column" spacing={3}>
@@ -73,39 +39,12 @@ export default function ManageAccount() {
           <PageTitle title="Manage accounts" />
         </Grid>
         <Grid item>
-          <List>
-            {accountList.map((account) => {
-              return (
-                <ListItem className={classes.accountItem} key={account.id}>
-                  <ListItemAvatar>
-                    <Avatar className={classes.accountAvatar} variant="rounded">
-                      <AccountBalanceWalletIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={account.name}
-                    secondary={`Start balance: ${account.startBalance}`}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="edit"
-                      onClick={() => handleModifyAccount(account)}
-                    >
-                      <SettingsIcon />
-                    </IconButton>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => handleDeleteAccount(account)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
+          <AccountList
+            accountList={accountList}
+            setSelectedAccount={setSelectedAccount}
+            setModifyAccountOpen={setModifyAccountOpen}
+            setDeleteAccountOpen={setDeleteAccountOpen}
+          />
         </Grid>
         <Grid item>
           <Button

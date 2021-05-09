@@ -3,14 +3,12 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   TextField,
 } from "@material-ui/core";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import axios from "../../../axios-instance";
-import { useAuth } from "../../../providers/AuthProvider";
+import axios from "../../axios-instance";
 
 const validationSchema = yup.object({
   name: yup.string("Enter account name").required("Account name is required"),
@@ -20,19 +18,16 @@ const validationSchema = yup.object({
     .required("Start balance is required"),
 });
 
-export default function AddAcountDialog({ open, setOpen }) {
-  const { token } = useAuth();
-
-  const addAccount = async (values) => {
+export default function ModifyAccountDialog({ open, setOpen, account }) {
+  const modifyAccount = async (values) => {
     const { name, startBalance } = values;
 
     const response = await axios({
-      method: "post",
-      url: "api/account",
+      method: "put",
+      url: `api/account/${account.id}`,
       data: {
         name,
         startBalance,
-        userId: token,
       },
     });
     if (response.status === 200) {
@@ -41,20 +36,17 @@ export default function AddAcountDialog({ open, setOpen }) {
   };
 
   const formik = useFormik({
-    initialValues: {
-      name: "",
-      startBalance: 0,
-    },
+    enableReinitialize: true,
+    initialValues: account ? account : { name: "", startBalance: "" },
     validationSchema: validationSchema,
-    onSubmit: addAccount,
+    onSubmit: modifyAccount,
   });
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>Add account</DialogTitle>
+      <DialogTitle>Modify account</DialogTitle>
       <DialogContent>
         <form onSubmit={formik.handleSubmit}>
-          <DialogContentText>Enter account details</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -69,7 +61,7 @@ export default function AddAcountDialog({ open, setOpen }) {
           <TextField
             margin="dense"
             id="startBalance"
-            label="Start balance"
+            label="Start balance balance"
             fullWidth
             value={formik.values.startBalance}
             onChange={formik.handleChange}
@@ -89,7 +81,7 @@ export default function AddAcountDialog({ open, setOpen }) {
               Cancel
             </Button>
             <Button color="primary" variant="contained" type="submit">
-              Add
+              Save
             </Button>
           </DialogActions>
         </form>

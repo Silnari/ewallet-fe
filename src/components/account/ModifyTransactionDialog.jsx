@@ -4,18 +4,16 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  MenuItem,
-  Select,
   TextField,
 } from "@material-ui/core";
-import DateFnsUtils from "@date-io/date-fns";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
-import * as yup from "yup";
-import { useFormik } from "formik";
-import axios from "../../../axios-instance";
+import DateFnsUtils from "@date-io/date-fns";
+import axios from "../../axios-instance";
 
 const validationSchema = yup.object({
   value: yup
@@ -31,26 +29,34 @@ const validationSchema = yup.object({
     .required("Date is required"),
 });
 
-export default function AddTransactionDialog({
+export default function ModifyTransactionDialog({
   open,
   setOpen,
-  selectedAccount,
-  accountList,
-  transactionType,
+  transaction,
 }) {
-  const addTransaction = async (values) => {
-    const { account, value, note, category, date } = values;
+  const modifyTransaction = async (values) => {
+    const { value, note, category, date } = values;
+
     const response = await axios({
-      method: "post",
-      url: "api/transaction",
+      method: "put",
+      url: `/api/transaction/${transaction.id}`,
       data: {
-        accountId: account,
         value,
         note,
         category,
         date,
-        transactionType,
       },
+    });
+
+    if (response.status === 200) {
+      setOpen(false);
+    }
+  };
+
+  const deleteTransaction = async () => {
+    const response = await axios({
+      method: "delete",
+      url: `/api/transaction/${transaction.id}`,
     });
     if (response.status === 200) {
       setOpen(false);
@@ -59,36 +65,16 @@ export default function AddTransactionDialog({
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: {
-      account: selectedAccount?.id,
-      value: 0,
-      note: "",
-      category: "",
-      date: new Date(new Date().setHours(0, 0, 0, 0)),
-    },
+    initialValues: transaction ? transaction : {},
     validationSchema: validationSchema,
-    onSubmit: addTransaction,
+    onSubmit: modifyTransaction,
   });
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>Add new {transactionType.toLowerCase()}</DialogTitle>
+      <DialogTitle>Modify</DialogTitle>
       <DialogContent>
         <form onSubmit={formik.handleSubmit}>
-          <Select
-            id="account"
-            name="account"
-            value={formik.values.account}
-            fullWidth
-            onChange={formik.handleChange}
-            error={formik.touched.account && Boolean(formik.errors.account)}
-          >
-            {accountList.map((account) => (
-              <MenuItem key={account.id} value={account.id}>
-                {account.name}
-              </MenuItem>
-            ))}
-          </Select>
           <TextField
             margin="dense"
             id="value"
@@ -140,6 +126,13 @@ export default function AddTransactionDialog({
           </MuiPickersUtilsProvider>
           <DialogActions>
             <Button
+              variant="contained"
+              color="secondary"
+              onClick={deleteTransaction}
+            >
+              Delete
+            </Button>
+            <Button
               onClick={() => setOpen(false)}
               color="primary"
               variant="outlined"
@@ -147,7 +140,7 @@ export default function AddTransactionDialog({
               Cancel
             </Button>
             <Button color="primary" variant="contained" type="submit">
-              Add
+              Save
             </Button>
           </DialogActions>
         </form>

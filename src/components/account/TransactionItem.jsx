@@ -13,7 +13,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { makeStyles } from "@material-ui/styles";
 import moment from "moment";
-import ModifyTransactionDialog from "./dialog/ModifyTransactionDialog";
+import ModifyTransactionDialog from "./ModifyTransactionDialog";
 import { useTransactionList } from "../../providers/TransactionListProvider";
 
 const useStyles = makeStyles((theme) => ({

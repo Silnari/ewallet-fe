@@ -8,16 +8,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import DatePicker from "../components/core/DatePicker";
+import DatePicker from "../components/account/DatePicker";
 import RemoveCircleOutlineOutlinedIcon from "@material-ui/icons/RemoveCircleOutlineOutlined";
 import LoopRoundedIcon from "@material-ui/icons/LoopRounded";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import EventIcon from "@material-ui/icons/Event";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import { makeStyles } from "@material-ui/styles";
-import AddTransactionDialog from "../components/core/dialog/AddTransactionDialog";
+import AddTransactionDialog from "../components/account/AddTransactionDialog";
 import { useAccountList } from "../providers/AccountListProvider";
-import TransactionList from "../components/core/TransactionList";
+import TransactionList from "../components/account/TransactionList";
 import { useTransactionList } from "../providers/TransactionListProvider";
 import Loading from "../components/core/Loading";
 
