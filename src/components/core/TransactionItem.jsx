@@ -7,16 +7,20 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { makeStyles } from "@material-ui/styles";
 import moment from "moment";
+import ModifyTransactionDialog from "./dialog/ModifyTransactionDialog";
+import { useTransactionList } from "../../providers/TransactionListProvider";
 
 const useStyles = makeStyles((theme) => ({
   nested: {
-    paddingLeft: theme.spacing(4),
+    marginLeft: theme.spacing(4),
+    borderRadius: 50,
+    width: 430,
   },
   transactionSubItem: {
     textAlign: "right",
@@ -55,6 +59,9 @@ export default function TransactionItem({
   type,
 }) {
   const [open, setOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const { getTransactionList } = useTransactionList();
   const classes = useStyles();
 
   const getSubField = (transaction) => {
@@ -67,6 +74,9 @@ export default function TransactionItem({
     var _ = require("lodash");
     return _.round(_.sumBy(transactionItem, "value"), 2);
   };
+
+  // eslint-disable-next-line
+  useEffect(() => getTransactionList(), [isDialogOpen]);
 
   return (
     <>
@@ -99,7 +109,15 @@ export default function TransactionItem({
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {transactionList.map((transaction) => (
-            <ListItem key={transaction.id} className={classes.nested}>
+            <ListItem
+              key={transaction.id}
+              className={classes.nested}
+              button
+              onClick={() => {
+                setSelectedTransaction(transaction);
+                setIsDialogOpen(true);
+              }}
+            >
               <ListItemIcon>
                 <FiberManualRecordIcon
                   fontSize="small"
@@ -120,6 +138,11 @@ export default function TransactionItem({
           ))}
         </List>
       </Collapse>
+      <ModifyTransactionDialog
+        open={isDialogOpen}
+        setOpen={setIsDialogOpen}
+        transaction={selectedTransaction}
+      />
     </>
   );
 }
