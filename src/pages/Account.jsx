@@ -20,6 +20,7 @@ import { useAccountList } from "../providers/AccountListProvider";
 import TransactionList from "../components/account/TransactionList";
 import { useTransactionList } from "../providers/TransactionListProvider";
 import Loading from "../components/core/Loading";
+import Balance from "../components/account/Balance";
 
 const useStyles = makeStyles((theme) => ({
   incomeButton: {
@@ -83,13 +84,21 @@ export default function Account() {
             ))}
           </Select>
           <Box>
-            <Grid container align="center" direction="column" spcing={3}>
+            <Grid container align="center" direction="column" spacing={2}>
               <Grid item>
                 <DatePicker
                   date={date}
                   setDate={setDate}
                   periodOfTime={periodOfTime}
                   setPeriodOfTime={setPeriodOfTime}
+                />
+              </Grid>
+              <Grid item>
+                <Balance
+                  account={selectedAccount}
+                  transactionList={transactionList}
+                  date={date}
+                  periodOfTime={periodOfTime}
                 />
               </Grid>
               <Grid item>
@@ -115,32 +124,29 @@ export default function Account() {
                 </Box>
               </Grid>
               <Grid item>
-                <Container maxWidth="sm">
-                  <Box
-                    mt={2}
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="flex-end"
-                    alignItems="center"
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                >
+                  <Typography>Sort by {sortBy}&nbsp;</Typography>
+                  <IconButton
+                    className={classes.sortButton}
+                    size="small"
+                    onClick={() =>
+                      setSortBy(sortBy === "date" ? "category" : "date")
+                    }
                   >
-                    <Typography>Sort by {sortBy}&nbsp;</Typography>
-                    <IconButton
-                      className={classes.sortButton}
-                      size="small"
-                      onClick={() =>
-                        setSortBy(sortBy === "date" ? "category" : "date")
-                      }
-                    >
-                      {sortBy === "date" ? <FolderOpenIcon /> : <EventIcon />}
-                    </IconButton>
-                  </Box>
-                  <TransactionList
-                    sortBy={sortBy}
-                    transactionList={transactionList}
-                    date={date}
-                    periodOfTime={periodOfTime}
-                  />
-                </Container>
+                    {sortBy === "date" ? <FolderOpenIcon /> : <EventIcon />}
+                  </IconButton>
+                </Box>
+                <TransactionList
+                  sortBy={sortBy}
+                  transactionList={transactionList}
+                  date={date}
+                  periodOfTime={periodOfTime}
+                />
               </Grid>
             </Grid>
           </Box>

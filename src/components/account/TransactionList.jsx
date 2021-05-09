@@ -3,6 +3,7 @@ import TransactionItem from "./TransactionItem";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import EventIcon from "@material-ui/icons/Event";
 import moment from "moment";
+import _ from "lodash";
 
 export default function TransactionList({
   transactionList,
@@ -15,6 +16,7 @@ export default function TransactionList({
     if (periodOfTime === "M") return "month";
     return "year";
   };
+
   const getByTransactionType = (transactionType) => {
     const filteredByDate = transactionList.filter((transaction) =>
       moment(transaction.date).isSame(moment(date), getPeriod())
@@ -26,7 +28,6 @@ export default function TransactionList({
   };
 
   const getSortByList = (transactionList) => {
-    var _ = require("lodash");
     const sortByList = _.orderBy(
       _.groupBy(transactionList, sortBy),
       [(item) => _.sumBy(item, "value")],

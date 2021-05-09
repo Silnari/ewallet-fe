@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   nested: {
     marginLeft: theme.spacing(4),
     borderRadius: 50,
-    width: 430,
+    width: 450,
   },
   transactionSubItem: {
     textAlign: "right",
