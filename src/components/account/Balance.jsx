@@ -61,18 +61,24 @@ export default function Balance({
     );
 
   const getIncomeSum = () =>
-    _.sumBy(
-      filterByDate().filter((t) => t.transactionType === "INCOME"),
-      "value"
+    _.round(
+      _.sumBy(
+        filterByDate().filter((t) => t.transactionType === "INCOME"),
+        "value"
+      ),
+      2
     );
 
   const getOutcomeSum = () =>
-    -_.sumBy(
-      filterByDate().filter((t) => t.transactionType !== "INCOME"),
-      "value"
+    _.round(
+      _.sumBy(
+        filterByDate().filter((t) => t.transactionType !== "INCOME"),
+        "value"
+      ),
+      2
     );
 
-  const getSum = () => getTransactionSum(filterByDate());
+  const getSum = () => _.round(getTransactionSum(filterByDate()), 2);
 
   return (
     <Box>
