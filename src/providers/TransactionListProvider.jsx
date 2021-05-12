@@ -9,12 +9,40 @@ export default function TransactionListProvider({ children }) {
 
   const getTransactionList = async () => {
     if (!selectedAccount) return;
-    const response = await axios({
+    const transactionsResponse = await axios({
       method: "get",
       url: `api/transaction/${selectedAccount?.id}`,
     });
-    if (response.status === 200) {
-      setTransactionList(response.data);
+
+    const incomeResponse = await axios({
+      method: "get",
+      url: `api/transfer/to/${selectedAccount.id}`,
+    });
+
+    const outcomeResponse = await axios({
+      method: "get",
+      url: `api/transfer/from/${selectedAccount.id}`,
+    });
+
+    if (
+      transactionsResponse.status === 200 &&
+      incomeResponse.status === 200 &&
+      outcomeResponse.status === 200
+    ) {
+      setTransactionList(
+        transactionsResponse.data.concat(
+          incomeResponse.data.map((i) => {
+            i.transactionType = "TRANSFER-INCOME";
+            i.category = "Transfer";
+            return i;
+          }),
+          outcomeResponse.data.map((o) => {
+            o.transactionType = "TRANSFER-OUTCOME";
+            o.category = "Transfer";
+            return o;
+          })
+        )
+      );
     }
   };
 

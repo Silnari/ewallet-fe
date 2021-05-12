@@ -21,6 +21,7 @@ import TransactionList from "../components/account/TransactionList";
 import { useTransactionList } from "../providers/TransactionListProvider";
 import Loading from "../components/core/Loading";
 import Balance from "../components/account/Balance";
+import AddTransferDialog from "../components/account/AddTransferDialog";
 
 const useStyles = makeStyles((theme) => ({
   incomeButton: {
@@ -47,6 +48,7 @@ export default function Account() {
   const [date, setDate] = useState(new Date());
   const [periodOfTime, setPeriodOfTime] = useState("M");
   const [addTransactionOpen, setAddTransactionOpen] = useState(false);
+  const [addTransferOpen, setAddTransferOpen] = useState(false);
   const [transactionType, setTransactionType] = useState("INCOME");
   const { accountList, selectedAccount, setSelectedById } = useAccountList();
   const { transactionList, getTransactionList } = useTransactionList();
@@ -54,7 +56,7 @@ export default function Account() {
   const classes = useStyles();
 
   // eslint-disable-next-line
-  useEffect(() => getTransactionList(), [addTransactionOpen]);
+  useEffect(() => getTransactionList(), [addTransactionOpen, addTransferOpen]);
 
   const addTransaction = (transactionType) => {
     setTransactionType(transactionType);
@@ -111,7 +113,7 @@ export default function Account() {
                   </IconButton>
                   <IconButton
                     color="inherit"
-                    onClick={() => addTransaction("TRANSFER")}
+                    onClick={() => setAddTransferOpen(true)}
                   >
                     <LoopRoundedIcon fontSize="large" />
                   </IconButton>
@@ -156,6 +158,11 @@ export default function Account() {
             transactionType={transactionType}
             accountList={accountList}
             selectedAccount={selectedAccount}
+          />
+          <AddTransferDialog
+            open={addTransferOpen}
+            setOpen={setAddTransferOpen}
+            accountList={accountList}
           />
         </Box>
       )}

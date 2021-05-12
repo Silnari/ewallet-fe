@@ -14,7 +14,9 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { makeStyles } from "@material-ui/styles";
 import moment from "moment";
 import ModifyTransactionDialog from "./ModifyTransactionDialog";
+import ModifyTransferDialog from "./ModifyTransferDialog";
 import { useTransactionList } from "../../providers/TransactionListProvider";
+import { useAccountList } from "../../providers/AccountListProvider";
 
 const useStyles = makeStyles((theme) => ({
   nested: {
@@ -60,8 +62,10 @@ export default function TransactionItem({
 }) {
   const [open, setOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isTransferDialogOpen, setIsTransferDialogOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const { getTransactionList } = useTransactionList();
+  const { accountList } = useAccountList();
   const classes = useStyles();
 
   const getSubField = (transaction) => {
@@ -76,7 +80,14 @@ export default function TransactionItem({
   };
 
   // eslint-disable-next-line
-  useEffect(() => getTransactionList(), [isDialogOpen]);
+  useEffect(() => getTransactionList(), [isDialogOpen, isTransferDialogOpen]);
+
+  const handleOpenDialog = (transaction) => {
+    setSelectedTransaction(transaction);
+    if (["INCOME", "OUTCOME"].includes(transaction.transactionType))
+      setIsDialogOpen(true);
+    else setIsTransferDialogOpen(true);
+  };
 
   return (
     <>
@@ -114,8 +125,7 @@ export default function TransactionItem({
               className={classes.nested}
               button
               onClick={() => {
-                setSelectedTransaction(transaction);
-                setIsDialogOpen(true);
+                handleOpenDialog(transaction);
               }}
             >
               <ListItemIcon>
@@ -142,6 +152,12 @@ export default function TransactionItem({
         open={isDialogOpen}
         setOpen={setIsDialogOpen}
         transaction={selectedTransaction}
+      />
+      <ModifyTransferDialog
+        open={isTransferDialogOpen}
+        setOpen={setIsTransferDialogOpen}
+        transfer={selectedTransaction}
+        accountList={accountList}
       />
     </>
   );

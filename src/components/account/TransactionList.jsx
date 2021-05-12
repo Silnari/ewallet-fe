@@ -17,13 +17,13 @@ export default function TransactionList({
     return "year";
   };
 
-  const getByTransactionType = (transactionType) => {
+  const getByTransactionType = (transactionTypes) => {
     const filteredByDate = transactionList.filter((transaction) =>
       moment(transaction.date).isSame(moment(date), getPeriod())
     );
 
-    return filteredByDate.filter(
-      (transaction) => transaction.transactionType === transactionType
+    return filteredByDate.filter((transaction) =>
+      transactionTypes.includes(transaction.transactionType)
     );
   };
 
@@ -46,26 +46,30 @@ export default function TransactionList({
 
   return (
     <List>
-      {getSortByList(getByTransactionType("INCOME")).map((transactionItem) => (
-        <TransactionItem
-          key={transactionItem[0][sortBy] + "INCOME"}
-          type="INCOME"
-          icon={getIcon()}
-          transactionList={transactionItem}
-          sortBy={sortBy}
-          header={getHeader(transactionItem)}
-        />
-      ))}
-      {getSortByList(getByTransactionType("OUTCOME")).map((transactionItem) => (
-        <TransactionItem
-          key={transactionItem[0][sortBy] + "OUTCOME"}
-          type="OUTCOME"
-          icon={getIcon()}
-          transactionList={transactionItem}
-          sortBy={sortBy}
-          header={getHeader(transactionItem)}
-        />
-      ))}
+      {getSortByList(getByTransactionType(["INCOME", "TRANSFER-INCOME"])).map(
+        (transactionItem) => (
+          <TransactionItem
+            key={transactionItem[0][sortBy] + "INCOME"}
+            type="INCOME"
+            icon={getIcon()}
+            transactionList={transactionItem}
+            sortBy={sortBy}
+            header={getHeader(transactionItem)}
+          />
+        )
+      )}
+      {getSortByList(getByTransactionType(["OUTCOME", "TRANSFER-OUTCOME"])).map(
+        (transactionItem) => (
+          <TransactionItem
+            key={transactionItem[0][sortBy] + "OUTCOME"}
+            type="OUTCOME"
+            icon={getIcon()}
+            transactionList={transactionItem}
+            sortBy={sortBy}
+            header={getHeader(transactionItem)}
+          />
+        )
+      )}
     </List>
   );
 }

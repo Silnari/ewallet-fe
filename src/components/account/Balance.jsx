@@ -46,7 +46,7 @@ export default function Balance({
   const getTransactionSum = (transactionList) =>
     _.sum(
       transactionList.map((transaction) =>
-        transaction.transactionType === "INCOME"
+        ["INCOME", "TRANSFER-INCOME"].includes(transaction.transactionType)
           ? transaction.value
           : -transaction.value
       )
@@ -63,7 +63,9 @@ export default function Balance({
   const getIncomeSum = () =>
     _.round(
       _.sumBy(
-        filterByDate().filter((t) => t.transactionType === "INCOME"),
+        filterByDate().filter((t) =>
+          ["INCOME", "TRANSFER-INCOME"].includes(t.transactionType)
+        ),
         "value"
       ),
       2
@@ -72,7 +74,9 @@ export default function Balance({
   const getOutcomeSum = () =>
     _.round(
       _.sumBy(
-        filterByDate().filter((t) => t.transactionType !== "INCOME"),
+        filterByDate().filter((t) =>
+          ["OUTCOME", "TRANSFER-OUTCOME"].includes(t.transactionType)
+        ),
         "value"
       ),
       2
