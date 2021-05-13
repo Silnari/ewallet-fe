@@ -163,6 +163,7 @@ export default function Account() {
             open={addTransferOpen}
             setOpen={setAddTransferOpen}
             accountList={accountList}
+            selectedAccount={selectedAccount}
           />
         </Box>
       )}

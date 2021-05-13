@@ -127,11 +127,13 @@ export default function ModifyTransferDialog({
                   formik.touched.toAccount && Boolean(formik.errors.toAccount)
                 }
               >
-                {accountList.map((account) => (
-                  <MenuItem key={account.id} value={account.id}>
-                    {account.name}
-                  </MenuItem>
-                ))}
+                {accountList
+                  .filter((account) => account.id !== formik.values.fromAccount)
+                  .map((account) => (
+                    <MenuItem key={account.id} value={account.id}>
+                      {account.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </Grid>
           </Grid>
