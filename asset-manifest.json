@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/ewallet-fe/static/js/main.5c97fb59.chunk.js",
-    "main.js.map": "/ewallet-fe/static/js/main.5c97fb59.chunk.js.map",
+    "main.js": "/ewallet-fe/static/js/main.abc312ab.chunk.js",
+    "main.js.map": "/ewallet-fe/static/js/main.abc312ab.chunk.js.map",
     "runtime-main.js": "/ewallet-fe/static/js/runtime-main.6d05ebe4.js",
     "runtime-main.js.map": "/ewallet-fe/static/js/runtime-main.6d05ebe4.js.map",
-    "static/js/2.89dd72c3.chunk.js": "/ewallet-fe/static/js/2.89dd72c3.chunk.js",
-    "static/js/2.89dd72c3.chunk.js.map": "/ewallet-fe/static/js/2.89dd72c3.chunk.js.map",
+    "static/js/2.2cd73efc.chunk.js": "/ewallet-fe/static/js/2.2cd73efc.chunk.js",
+    "static/js/2.2cd73efc.chunk.js.map": "/ewallet-fe/static/js/2.2cd73efc.chunk.js.map",
     "index.html": "/ewallet-fe/index.html",
-    "static/js/2.89dd72c3.chunk.js.LICENSE.txt": "/ewallet-fe/static/js/2.89dd72c3.chunk.js.LICENSE.txt"
+    "static/js/2.2cd73efc.chunk.js.LICENSE.txt": "/ewallet-fe/static/js/2.2cd73efc.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.6d05ebe4.js",
-    "static/js/2.89dd72c3.chunk.js",
-    "static/js/main.5c97fb59.chunk.js"
+    "static/js/2.2cd73efc.chunk.js",
+    "static/js/main.abc312ab.chunk.js"
   ]
 }
