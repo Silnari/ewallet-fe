@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.js": "/konradperlowski.github.io/ewallet/static/js/main.5c97fb59.chunk.js",
-    "main.js.map": "/konradperlowski.github.io/ewallet/static/js/main.5c97fb59.chunk.js.map",
-    "runtime-main.js": "/konradperlowski.github.io/ewallet/static/js/runtime-main.f58e7e92.js",
-    "runtime-main.js.map": "/konradperlowski.github.io/ewallet/static/js/runtime-main.f58e7e92.js.map",
-    "static/js/2.89dd72c3.chunk.js": "/konradperlowski.github.io/ewallet/static/js/2.89dd72c3.chunk.js",
-    "static/js/2.89dd72c3.chunk.js.map": "/konradperlowski.github.io/ewallet/static/js/2.89dd72c3.chunk.js.map",
-    "index.html": "/konradperlowski.github.io/ewallet/index.html",
-    "static/js/2.89dd72c3.chunk.js.LICENSE.txt": "/konradperlowski.github.io/ewallet/static/js/2.89dd72c3.chunk.js.LICENSE.txt"
+    "main.js": "/silnari.github.io/ewallet/static/js/main.5c97fb59.chunk.js",
+    "main.js.map": "/silnari.github.io/ewallet/static/js/main.5c97fb59.chunk.js.map",
+    "runtime-main.js": "/silnari.github.io/ewallet/static/js/runtime-main.09aea6d2.js",
+    "runtime-main.js.map": "/silnari.github.io/ewallet/static/js/runtime-main.09aea6d2.js.map",
+    "static/js/2.89dd72c3.chunk.js": "/silnari.github.io/ewallet/static/js/2.89dd72c3.chunk.js",
+    "static/js/2.89dd72c3.chunk.js.map": "/silnari.github.io/ewallet/static/js/2.89dd72c3.chunk.js.map",
+    "index.html": "/silnari.github.io/ewallet/index.html",
+    "static/js/2.89dd72c3.chunk.js.LICENSE.txt": "/silnari.github.io/ewallet/static/js/2.89dd72c3.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.f58e7e92.js",
+    "static/js/runtime-main.09aea6d2.js",
     "static/js/2.89dd72c3.chunk.js",
     "static/js/main.5c97fb59.chunk.js"
   ]
