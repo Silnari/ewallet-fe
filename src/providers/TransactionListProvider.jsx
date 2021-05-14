@@ -1,18 +1,25 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAccountList } from "./AccountListProvider";
 import axios from "../axios-instance";
+import { useAuth } from "./AuthProvider";
 
 const TransactionListContext = createContext();
 export default function TransactionListProvider({ children }) {
   const [transactionList, setTransactionList] = useState([]);
   const { selectedAccount } = useAccountList();
+  const { token } = useAuth();
 
   const getTransactionList = async () => {
-    if (!selectedAccount) return;
+    if (selectedAccount === undefined || selectedAccount === null) return;
     const transactionsResponse = await axios({
       method: "get",
-      url: `api/transaction/${selectedAccount?.id}`,
+      url: `api/transaction/${token}/${selectedAccount?.id}`,
     });
+
+    if (selectedAccount.id === 0 && transactionsResponse.status === 200) {
+      setTransactionList(transactionsResponse.data);
+      return;
+    }
 
     const incomeResponse = await axios({
       method: "get",

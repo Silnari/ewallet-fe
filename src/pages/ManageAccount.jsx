@@ -25,12 +25,11 @@ export default function ManageAccount() {
     }
   };
 
-  // eslint-disable-next-line
-  useEffect(() => getAccountList(), [
-    addAccountOpen,
-    modifyAccountOpen,
-    deleteAccountOpen,
-  ]);
+  useEffect(
+    () => getAccountList(),
+    // eslint-disable-next-line
+    [addAccountOpen, modifyAccountOpen, deleteAccountOpen]
+  );
 
   return (
     <Container maxWidth="sm">
@@ -40,7 +39,7 @@ export default function ManageAccount() {
         </Grid>
         <Grid item>
           <AccountList
-            accountList={accountList}
+            accountList={accountList.filter((account) => account.id !== 0)}
             setSelectedAccount={setSelectedAccount}
             setModifyAccountOpen={setModifyAccountOpen}
             setDeleteAccountOpen={setDeleteAccountOpen}
