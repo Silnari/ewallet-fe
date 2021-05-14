@@ -60,7 +60,8 @@ export default function AddTransferDialog({
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      fromAccount: selectedAccount.id,
+      fromAccount:
+        selectedAccount.id !== 0 ? selectedAccount.id : accountList[0].id,
       toAccount: accountList[1].id,
       value: 0,
       note: "",
@@ -91,11 +92,13 @@ export default function AddTransferDialog({
                   Boolean(formik.errors.fromAccount)
                 }
               >
-                {accountList.map((account) => (
-                  <MenuItem key={account.id} value={account.id}>
-                    {account.name}
-                  </MenuItem>
-                ))}
+                {accountList
+                  .filter((account) => account.id !== 0)
+                  .map((account) => (
+                    <MenuItem key={account.id} value={account.id}>
+                      {account.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </Grid>
             <Grid item xs={2} style={{ paddingTop: 20 }}>
@@ -116,7 +119,10 @@ export default function AddTransferDialog({
                 }
               >
                 {accountList
-                  .filter((account) => account.id !== formik.values.fromAccount)
+                  .filter(
+                    (account) =>
+                      ![formik.values.fromAccount, 0].includes(account.id)
+                  )
                   .map((account) => (
                     <MenuItem key={account.id} value={account.id}>
                       {account.name}

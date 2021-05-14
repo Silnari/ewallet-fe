@@ -60,7 +60,8 @@ export default function AddTransactionDialog({
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      account: selectedAccount?.id,
+      account:
+        selectedAccount?.id !== 0 ? selectedAccount.id : accountList[0].id,
       value: 0,
       note: "",
       category: "",
@@ -83,11 +84,13 @@ export default function AddTransactionDialog({
             onChange={formik.handleChange}
             error={formik.touched.account && Boolean(formik.errors.account)}
           >
-            {accountList.map((account) => (
-              <MenuItem key={account.id} value={account.id}>
-                {account.name}
-              </MenuItem>
-            ))}
+            {accountList
+              .filter((account) => account.id !== 0)
+              .map((account) => (
+                <MenuItem key={account.id} value={account.id}>
+                  {account.name}
+                </MenuItem>
+              ))}
           </Select>
           <TextField
             margin="dense"
