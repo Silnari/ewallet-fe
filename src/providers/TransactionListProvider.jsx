@@ -6,11 +6,14 @@ import { useAuth } from "./AuthProvider";
 const TransactionListContext = createContext();
 export default function TransactionListProvider({ children }) {
   const [transactionList, setTransactionList] = useState([]);
+  const [isTransactionLoading, setIsTransactionLoading] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { selectedAccount } = useAccountList();
   const { token } = useAuth();
 
   const getTransactionList = async () => {
     if (selectedAccount === undefined || selectedAccount === null) return;
+    setIsTransactionLoading(true);
     const transactionsResponse = await axios({
       method: "get",
       url: `api/transaction/${token}/${selectedAccount?.id}`,
@@ -18,6 +21,7 @@ export default function TransactionListProvider({ children }) {
 
     if (selectedAccount.id === 0 && transactionsResponse.status === 200) {
       setTransactionList(transactionsResponse.data);
+      setIsTransactionLoading(false);
       return;
     }
 
@@ -50,15 +54,23 @@ export default function TransactionListProvider({ children }) {
           })
         )
       );
+      setIsTransactionLoading(false);
     }
   };
 
-  // eslint-disable-next-line
-  useEffect(() => getTransactionList(), [selectedAccount]);
+  useEffect(
+    () => getTransactionList(),
+    // eslint-disable-next-line
+    [selectedAccount, refreshKey]
+  );
 
   return (
     <TransactionListContext.Provider
-      value={{ transactionList, getTransactionList }}
+      value={{
+        transactionList,
+        isTransactionLoading,
+        setRefreshKey,
+      }}
     >
       {children}
     </TransactionListContext.Provider>

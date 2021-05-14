@@ -19,6 +19,7 @@ import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "../../axios-instance";
+import { useTransactionList } from "../../providers/TransactionListProvider";
 
 const validationSchema = yup.object({
   value: yup
@@ -39,6 +40,8 @@ export default function AddTransferDialog({
   selectedAccount,
   accountList,
 }) {
+  const { setRefreshKey } = useTransactionList();
+
   const addTransfer = async (values) => {
     const { toAccount, fromAccount, value, note, date } = values;
     const response = await axios({
@@ -54,6 +57,7 @@ export default function AddTransferDialog({
     });
     if (response.status === 200) {
       setOpen(false);
+      setRefreshKey((oldKey) => oldKey + 1);
     }
   };
 

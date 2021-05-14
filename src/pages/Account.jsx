@@ -7,7 +7,7 @@ import {
   Select,
   Typography,
 } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DatePicker from "../components/account/DatePicker";
 import RemoveCircleOutlineOutlinedIcon from "@material-ui/icons/RemoveCircleOutlineOutlined";
 import LoopRoundedIcon from "@material-ui/icons/LoopRounded";
@@ -51,12 +51,9 @@ export default function Account() {
   const [addTransferOpen, setAddTransferOpen] = useState(false);
   const [transactionType, setTransactionType] = useState("INCOME");
   const { accountList, selectedAccount, setSelectedById } = useAccountList();
-  const { transactionList, getTransactionList } = useTransactionList();
+  const { transactionList, isTransactionLoading } = useTransactionList();
   const [sortBy, setSortBy] = useState("category");
   const classes = useStyles();
-
-  // eslint-disable-next-line
-  useEffect(() => getTransactionList(), [addTransactionOpen, addTransferOpen]);
 
   const addTransaction = (transactionType) => {
     setTransactionType(transactionType);
@@ -95,61 +92,68 @@ export default function Account() {
                   setPeriodOfTime={setPeriodOfTime}
                 />
               </Grid>
-              <Grid item>
-                <Balance
-                  account={selectedAccount}
-                  transactionList={transactionList}
-                  date={date}
-                  periodOfTime={periodOfTime}
-                />
-              </Grid>
-              <Grid item>
-                <Box mt={1}>
-                  <IconButton
-                    className={classes.incomeButton}
-                    onClick={() => addTransaction("INCOME")}
-                  >
-                    <AddCircleOutlineRoundedIcon fontSize="large" />
-                  </IconButton>
-                  <IconButton
-                    color="inherit"
-                    onClick={() => setAddTransferOpen(true)}
-                  >
-                    <LoopRoundedIcon fontSize="large" />
-                  </IconButton>
-                  <IconButton
-                    className={classes.outcomeButton}
-                    onClick={() => addTransaction("OUTCOME")}
-                  >
-                    <RemoveCircleOutlineOutlinedIcon fontSize="large" />
-                  </IconButton>
-                </Box>
-              </Grid>
-              <Grid item>
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  justifyContent="flex-end"
-                  alignItems="center"
-                >
-                  <Typography>Sort by {sortBy}&nbsp;</Typography>
-                  <IconButton
-                    className={classes.sortButton}
-                    size="small"
-                    onClick={() =>
-                      setSortBy(sortBy === "date" ? "category" : "date")
-                    }
-                  >
-                    {sortBy === "date" ? <FolderOpenIcon /> : <EventIcon />}
-                  </IconButton>
-                </Box>
-                <TransactionList
-                  sortBy={sortBy}
-                  transactionList={transactionList}
-                  date={date}
-                  periodOfTime={periodOfTime}
-                />
-              </Grid>
+              {isTransactionLoading ? (
+                <Loading />
+              ) : (
+                <>
+                  {" "}
+                  <Grid item>
+                    <Balance
+                      account={selectedAccount}
+                      transactionList={transactionList}
+                      date={date}
+                      periodOfTime={periodOfTime}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Box mt={1}>
+                      <IconButton
+                        className={classes.incomeButton}
+                        onClick={() => addTransaction("INCOME")}
+                      >
+                        <AddCircleOutlineRoundedIcon fontSize="large" />
+                      </IconButton>
+                      <IconButton
+                        color="inherit"
+                        onClick={() => setAddTransferOpen(true)}
+                      >
+                        <LoopRoundedIcon fontSize="large" />
+                      </IconButton>
+                      <IconButton
+                        className={classes.outcomeButton}
+                        onClick={() => addTransaction("OUTCOME")}
+                      >
+                        <RemoveCircleOutlineOutlinedIcon fontSize="large" />
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                  <Grid item>
+                    <Box
+                      display="flex"
+                      flexDirection="row"
+                      justifyContent="flex-end"
+                      alignItems="center"
+                    >
+                      <Typography>Sort by {sortBy}&nbsp;</Typography>
+                      <IconButton
+                        className={classes.sortButton}
+                        size="small"
+                        onClick={() =>
+                          setSortBy(sortBy === "date" ? "category" : "date")
+                        }
+                      >
+                        {sortBy === "date" ? <FolderOpenIcon /> : <EventIcon />}
+                      </IconButton>
+                    </Box>
+                    <TransactionList
+                      sortBy={sortBy}
+                      transactionList={transactionList}
+                      date={date}
+                      periodOfTime={periodOfTime}
+                    />
+                  </Grid>{" "}
+                </>
+              )}
             </Grid>
           </Box>
           <AddTransactionDialog

@@ -14,6 +14,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import axios from "../../axios-instance";
+import { useTransactionList } from "../../providers/TransactionListProvider";
 
 const validationSchema = yup.object({
   value: yup
@@ -34,6 +35,8 @@ export default function ModifyTransactionDialog({
   setOpen,
   transaction,
 }) {
+  const { setRefreshKey } = useTransactionList();
+
   const modifyTransaction = async (values) => {
     const { value, note, category, date } = values;
 
@@ -50,6 +53,7 @@ export default function ModifyTransactionDialog({
 
     if (response.status === 200) {
       setOpen(false);
+      setRefreshKey((oldKey) => oldKey + 1);
     }
   };
 
@@ -60,6 +64,7 @@ export default function ModifyTransactionDialog({
     });
     if (response.status === 200) {
       setOpen(false);
+      setRefreshKey((oldKey) => oldKey + 1);
     }
   };
 

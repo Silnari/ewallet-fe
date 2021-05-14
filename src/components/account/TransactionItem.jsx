@@ -7,7 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -15,7 +15,6 @@ import { makeStyles } from "@material-ui/styles";
 import moment from "moment";
 import ModifyTransactionDialog from "./ModifyTransactionDialog";
 import ModifyTransferDialog from "./ModifyTransferDialog";
-import { useTransactionList } from "../../providers/TransactionListProvider";
 import { useAccountList } from "../../providers/AccountListProvider";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +63,6 @@ export default function TransactionItem({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isTransferDialogOpen, setIsTransferDialogOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
-  const { getTransactionList } = useTransactionList();
   const { accountList } = useAccountList();
   const classes = useStyles();
 
@@ -78,9 +76,6 @@ export default function TransactionItem({
     var _ = require("lodash");
     return _.round(_.sumBy(transactionItem, "value"), 2);
   };
-
-  // eslint-disable-next-line
-  useEffect(() => getTransactionList(), [isDialogOpen, isTransferDialogOpen]);
 
   const handleOpenDialog = (transaction) => {
     setSelectedTransaction(transaction);

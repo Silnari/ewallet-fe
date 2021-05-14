@@ -19,6 +19,7 @@ import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "../../axios-instance";
+import { useTransactionList } from "../../providers/TransactionListProvider";
 
 const validationSchema = yup.object({
   value: yup
@@ -39,6 +40,8 @@ export default function ModifyTransferDialog({
   accountList,
   transfer,
 }) {
+  const { setRefreshKey } = useTransactionList();
+
   const modifyTransfer = async (values) => {
     const { toAccount, fromAccount, value, note, date } = values;
     const response = await axios({
@@ -54,6 +57,7 @@ export default function ModifyTransferDialog({
     });
     if (response.status === 200) {
       setOpen(false);
+      setRefreshKey((oldKey) => oldKey + 1);
     }
   };
 
@@ -64,6 +68,7 @@ export default function ModifyTransferDialog({
     });
     if (response.status === 200) {
       setOpen(false);
+      setRefreshKey((oldKey) => oldKey + 1);
     }
   };
 
@@ -103,11 +108,13 @@ export default function ModifyTransferDialog({
                   Boolean(formik.errors.fromAccount)
                 }
               >
-                {accountList.map((account) => (
-                  <MenuItem key={account.id} value={account.id}>
-                    {account.name}
-                  </MenuItem>
-                ))}
+                {accountList
+                  .filter((account) => account.id !== 0)
+                  .map((account) => (
+                    <MenuItem key={account.id} value={account.id}>
+                      {account.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </Grid>
             <Grid item xs={2} style={{ paddingTop: 20 }}>
@@ -128,7 +135,10 @@ export default function ModifyTransferDialog({
                 }
               >
                 {accountList
-                  .filter((account) => account.id !== formik.values.fromAccount)
+                  .filter(
+                    (account) =>
+                      ![formik.values.fromAccount, 0].includes(account.id)
+                  )
                   .map((account) => (
                     <MenuItem key={account.id} value={account.id}>
                       {account.name}

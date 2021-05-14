@@ -21,6 +21,7 @@ export default function AccountList({
     <List>
       {accountList.map((account) => (
         <AccountItem
+          key={account.id}
           account={account}
           handleModify={handleModify}
           handleDelete={handleDelete}
