@@ -28,6 +28,7 @@ const validationSchema = yup.object({
   category: yup.string("Enter category").required("Category is required"),
   date: yup
     .date("Enter date")
+    .typeError("Enter date with valid format (dd/mm/yyyy)")
     .max(new Date(), "Date cannot be in the future")
     .required("Date is required"),
 });

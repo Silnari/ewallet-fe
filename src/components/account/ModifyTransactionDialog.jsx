@@ -77,7 +77,7 @@ export default function ModifyTransactionDialog({
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>Modify</DialogTitle>
+      <DialogTitle>Modify transaction</DialogTitle>
       <DialogContent>
         <form onSubmit={formik.handleSubmit}>
           <TextField

@@ -22,6 +22,7 @@ import { useTransactionList } from "../providers/TransactionListProvider";
 import Loading from "../components/core/Loading";
 import Balance from "../components/account/Balance";
 import AddTransferDialog from "../components/account/AddTransferDialog";
+import NoAccount from "../components/account/NoAccount";
 
 const useStyles = makeStyles((theme) => ({
   incomeButton: {
@@ -94,9 +95,10 @@ export default function Account() {
               </Grid>
               {isTransactionLoading ? (
                 <Loading />
+              ) : accountList.length === 1 ? (
+                <NoAccount />
               ) : (
                 <>
-                  {" "}
                   <Grid item>
                     <Balance
                       account={selectedAccount}
@@ -134,7 +136,7 @@ export default function Account() {
                       justifyContent="flex-end"
                       alignItems="center"
                     >
-                      <Typography>Sort by {sortBy}&nbsp;</Typography>
+                      <Typography>Group by {sortBy}&nbsp;</Typography>
                       <IconButton
                         className={classes.sortButton}
                         size="small"

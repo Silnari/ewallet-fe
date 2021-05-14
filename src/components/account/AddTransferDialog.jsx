@@ -66,7 +66,7 @@ export default function AddTransferDialog({
     initialValues: {
       fromAccount:
         selectedAccount.id !== 0 ? selectedAccount.id : accountList[0].id,
-      toAccount: accountList[1].id,
+      toAccount: accountList[1]?.id,
       value: 0,
       note: "",
       date: new Date(new Date().setHours(0, 0, 0, 0)),
