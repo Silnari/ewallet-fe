@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://ewallet-be.mybluemix.net/",
+  baseURL: "https://ewallet-be.mybluemix.net/",
 });
