@@ -20,7 +20,7 @@ export const getIncomeSum = (transactionList) =>
   _.round(getTransactionSum(getIncome(transactionList)), 2);
 
 export const getOutcomeSum = (transactionList) =>
-  _.round(getTransactionSum(getOutcome(transactionList)), 2);
+  -_.round(getTransactionSum(getOutcome(transactionList)), 2);
 
 export const getSum = (transactionList) =>
   _.round(getTransactionSum(transactionList), 2);

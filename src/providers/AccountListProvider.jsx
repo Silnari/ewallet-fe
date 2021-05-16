@@ -6,9 +6,12 @@ const AccountListContext = createContext();
 export default function AccountListProvider({ children }) {
   const [accountList, setAccountList] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
+  const [isAccountLoading, setIsAccountLoading] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { token } = useAuth();
 
   const getAccountListAndSetSelected = async () => {
+    setIsAccountLoading(true);
     const response = await axios({
       method: "get",
       url: `api/account/${token}`,
@@ -16,16 +19,19 @@ export default function AccountListProvider({ children }) {
     if (response.status === 200) {
       setAccountList(response.data);
       setSelectedAccount(response.data[0]);
+      setIsAccountLoading(false);
     }
   };
 
   const getAccountList = async () => {
+    setIsAccountLoading(true);
     const response = await axios({
       method: "get",
       url: `api/account/${token}`,
     });
     if (response.status === 200) {
       setAccountList(response.data);
+      setIsAccountLoading(false);
     }
   };
 
@@ -33,6 +39,9 @@ export default function AccountListProvider({ children }) {
     getAccountListAndSetSelected();
     // eslint-disable-next-line
   }, []);
+
+  // eslint-disable-next-line
+  useEffect(() => getAccountList(), [refreshKey]);
 
   const setSelectedById = (id) => {
     setSelectedAccount(accountList.find((account) => account.id === id));
@@ -42,9 +51,10 @@ export default function AccountListProvider({ children }) {
     <AccountListContext.Provider
       value={{
         accountList,
-        getAccountList,
         selectedAccount,
         setSelectedById,
+        setRefreshKey,
+        isAccountLoading,
       }}
     >
       {children}

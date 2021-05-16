@@ -3,8 +3,6 @@ import {
   Container,
   Grid,
   IconButton,
-  MenuItem,
-  Select,
   Typography,
 } from "@material-ui/core";
 import { useState } from "react";
@@ -23,6 +21,7 @@ import Loading from "../components/core/Loading";
 import Balance from "../components/account/Balance";
 import AddTransferDialog from "../components/account/AddTransferDialog";
 import NoAccount from "../components/account/NoAccount";
+import AccountSelect from "../components/account/AccountSelect";
 
 const useStyles = makeStyles((theme) => ({
   incomeButton: {
@@ -51,7 +50,7 @@ export default function Account() {
   const [addTransactionOpen, setAddTransactionOpen] = useState(false);
   const [addTransferOpen, setAddTransferOpen] = useState(false);
   const [transactionType, setTransactionType] = useState("INCOME");
-  const { accountList, selectedAccount, setSelectedById } = useAccountList();
+  const { accountList, selectedAccount } = useAccountList();
   const { isTransactionLoading } = useTransactionList();
   const [sortBy, setSortBy] = useState("category");
   const classes = useStyles();
@@ -61,28 +60,13 @@ export default function Account() {
     setAddTransactionOpen(true);
   };
 
-  const handleSelectedAccountChange = (event) => {
-    setSelectedById(event.target.value);
-  };
-
   return (
     <Container maxWidth="md">
       {!selectedAccount ? (
         <Loading />
       ) : (
         <Box display="flex">
-          <Select
-            variant="outlined"
-            className={classes.accountPicker}
-            value={selectedAccount.id}
-            onChange={handleSelectedAccountChange}
-          >
-            {accountList.map((account) => (
-              <MenuItem key={account.id} value={account.id}>
-                {account.name}
-              </MenuItem>
-            ))}
-          </Select>
+          <AccountSelect />
           <Box>
             <Grid container align="center" direction="column" spacing={2}>
               <Grid item>

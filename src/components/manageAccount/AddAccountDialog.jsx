@@ -11,6 +11,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "../../axios-instance";
 import { useAuth } from "../../providers/AuthProvider";
+import { useAccountList } from "../../providers/AccountListProvider";
 
 const validationSchema = yup.object({
   name: yup.string("Enter account name").required("Account name is required"),
@@ -22,6 +23,7 @@ const validationSchema = yup.object({
 
 export default function AddAcountDialog({ open, setOpen }) {
   const { token } = useAuth();
+  const { setRefreshKey } = useAccountList();
 
   const addAccount = async (values) => {
     const { name, startBalance } = values;
@@ -37,6 +39,7 @@ export default function AddAcountDialog({ open, setOpen }) {
     });
     if (response.status === 200) {
       setOpen(false);
+      setRefreshKey((oldKey) => oldKey + 1);
     }
   };
 

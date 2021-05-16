@@ -9,6 +9,7 @@ import {
 import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "../../axios-instance";
+import { useAccountList } from "../../providers/AccountListProvider";
 
 const validationSchema = yup.object({
   name: yup.string("Enter account name").required("Account name is required"),
@@ -19,6 +20,7 @@ const validationSchema = yup.object({
 });
 
 export default function ModifyAccountDialog({ open, setOpen, account }) {
+  const { setRefreshKey } = useAccountList();
   const modifyAccount = async (values) => {
     const { name, startBalance } = values;
 
@@ -32,6 +34,7 @@ export default function ModifyAccountDialog({ open, setOpen, account }) {
     });
     if (response.status === 200) {
       setOpen(false);
+      setRefreshKey((oldKey) => oldKey + 1);
     }
   };
 

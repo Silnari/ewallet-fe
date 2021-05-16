@@ -5,8 +5,10 @@ import Account from "./Account";
 import ManageAccount from "./ManageAccount";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
+import AssessmentIcon from "@material-ui/icons/Assessment";
 import AccountListProvider from "../providers/AccountListProvider";
 import TransactionListProvider from "../providers/TransactionListProvider";
+import AccountStats from "./AccountStats";
 
 const pages = {
   account: {
@@ -18,6 +20,11 @@ const pages = {
     body: <ManageAccount />,
     icon: <AccountBalanceWalletIcon />,
     title: "Manage accounts",
+  },
+  accountStats: {
+    body: <AccountStats />,
+    icon: <AssessmentIcon />,
+    title: "Account stats",
   },
 };
 

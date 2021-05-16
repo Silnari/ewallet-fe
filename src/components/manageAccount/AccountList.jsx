@@ -1,32 +1,17 @@
 import { List } from "@material-ui/core";
+import { useAccountList } from "../../providers/AccountListProvider";
 import AccountItem from "./AccountItem";
 
-export default function AccountList({
-  accountList,
-  setSelectedAccount,
-  setModifyAccountOpen,
-  setDeleteAccountOpen,
-}) {
-  const handleModify = (account) => {
-    setSelectedAccount(account);
-    setModifyAccountOpen(true);
-  };
-
-  const handleDelete = (account) => {
-    setSelectedAccount(account);
-    setDeleteAccountOpen(true);
-  };
+export default function AccountList() {
+  const { accountList } = useAccountList();
 
   return (
     <List>
-      {accountList.map((account) => (
-        <AccountItem
-          key={account.id}
-          account={account}
-          handleModify={handleModify}
-          handleDelete={handleDelete}
-        />
-      ))}
+      {accountList
+        .filter((account) => account.id !== 0)
+        .map((account) => (
+          <AccountItem key={account.id} account={account} />
+        ))}
     </List>
   );
 }
