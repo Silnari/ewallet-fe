@@ -12,10 +12,11 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { makeStyles } from "@material-ui/styles";
-import moment from "moment";
 import ModifyTransactionDialog from "./ModifyTransactionDialog";
 import ModifyTransferDialog from "./ModifyTransferDialog";
 import { useAccountList } from "../../providers/AccountListProvider";
+import { getSum } from "../../utils/transactionUtil";
+import { format } from "../../utils/dateUtil";
 
 const useStyles = makeStyles((theme) => ({
   nested: {
@@ -67,14 +68,8 @@ export default function TransactionItem({
   const classes = useStyles();
 
   const getSubField = (transaction) => {
-    if (sortBy === "category")
-      return moment(transaction.date).format("dddd, MMMM Do YYYY");
+    if (sortBy === "category") return format(transaction.date);
     return transaction.category;
-  };
-
-  const getSum = (transactionItem) => {
-    var _ = require("lodash");
-    return _.round(_.sumBy(transactionItem, "value"), 2);
   };
 
   const handleOpenDialog = (transaction) => {

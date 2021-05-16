@@ -9,8 +9,8 @@ import {
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { makeStyles } from "@material-ui/styles";
-import moment from "moment";
 import { useState } from "react";
+import * as dateUtil from "../../utils/dateUtil";
 
 const useStyles = makeStyles(() => ({
   dateBox: {
@@ -37,39 +37,13 @@ export default function DatePicker({
   const [isNextAvaible, setIsNextAvaible] = useState(false);
   const classes = useStyles();
 
-  const printDate = (date, periodOfTime) => {
-    var m = moment(date);
-    if (periodOfTime === "w")
-      return (
-        m.startOf("isoweek").format("MMMM Do") +
-        " - " +
-        m.clone().startOf("isoweek").add(6, "d").format("MMMM Do[, ]YYYY")
-      );
-    if (periodOfTime === "M") return m.format("MMMM[, ]YYYY");
-    if (periodOfTime === "y") return m.format("YYYY");
-  };
-
   const nextDate = () => {
-    var m = moment(date);
-
-    setDate(
-      periodOfTime === "d"
-        ? m.add(7, periodOfTime).toDate()
-        : m.add(1, periodOfTime).toDate()
-    );
-
-    if (moment(new Date()).isSame(m, "day")) setIsNextAvaible(false);
+    setDate(dateUtil.addToDate(date, periodOfTime));
+    if (dateUtil.isNextAvaible(date, periodOfTime)) setIsNextAvaible(false);
   };
 
   const prevDate = () => {
-    var m = moment(date);
-
-    setDate(
-      periodOfTime === "d"
-        ? m.subtract(7, periodOfTime).toDate()
-        : m.subtract(1, periodOfTime).toDate()
-    );
-
+    setDate(dateUtil.substractFromDate(date, periodOfTime));
     setIsNextAvaible(true);
   };
 
@@ -101,7 +75,7 @@ export default function DatePicker({
           </IconButton>
           <Box className={classes.dateBox}>
             <Typography variant="h6">
-              {printDate(date, periodOfTime)}
+              {dateUtil.formatDate(date, periodOfTime)}
             </Typography>
           </Box>
           <IconButton

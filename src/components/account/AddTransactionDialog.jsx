@@ -17,6 +17,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "../../axios-instance";
 import { useTransactionList } from "../../providers/TransactionListProvider";
+import { useAccountList } from "../../providers/AccountListProvider";
 
 const validationSchema = yup.object({
   value: yup
@@ -36,11 +37,10 @@ const validationSchema = yup.object({
 export default function AddTransactionDialog({
   open,
   setOpen,
-  selectedAccount,
-  accountList,
   transactionType,
 }) {
   const { setRefreshKey } = useTransactionList();
+  const { accountList, selectedAccount } = useAccountList();
 
   const addTransaction = async (values) => {
     const { account, value, note, category, date } = values;

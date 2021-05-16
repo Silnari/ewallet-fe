@@ -20,6 +20,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "../../axios-instance";
 import { useTransactionList } from "../../providers/TransactionListProvider";
+import { useAccountList } from "../../providers/AccountListProvider";
 
 const validationSchema = yup.object({
   value: yup
@@ -34,13 +35,9 @@ const validationSchema = yup.object({
     .required("Date is required"),
 });
 
-export default function AddTransferDialog({
-  open,
-  setOpen,
-  selectedAccount,
-  accountList,
-}) {
+export default function AddTransferDialog({ open, setOpen }) {
   const { setRefreshKey } = useTransactionList();
+  const { accountList, selectedAccount } = useAccountList();
 
   const addTransfer = async (values) => {
     const { toAccount, fromAccount, value, note, date } = values;

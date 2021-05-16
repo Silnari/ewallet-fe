@@ -52,7 +52,7 @@ export default function Account() {
   const [addTransferOpen, setAddTransferOpen] = useState(false);
   const [transactionType, setTransactionType] = useState("INCOME");
   const { accountList, selectedAccount, setSelectedById } = useAccountList();
-  const { transactionList, isTransactionLoading } = useTransactionList();
+  const { isTransactionLoading } = useTransactionList();
   const [sortBy, setSortBy] = useState("category");
   const classes = useStyles();
 
@@ -100,12 +100,7 @@ export default function Account() {
               ) : (
                 <>
                   <Grid item>
-                    <Balance
-                      account={selectedAccount}
-                      transactionList={transactionList}
-                      date={date}
-                      periodOfTime={periodOfTime}
-                    />
+                    <Balance date={date} periodOfTime={periodOfTime} />
                   </Grid>
                   <Grid item>
                     <Box mt={1}>
@@ -149,7 +144,6 @@ export default function Account() {
                     </Box>
                     <TransactionList
                       sortBy={sortBy}
-                      transactionList={transactionList}
                       date={date}
                       periodOfTime={periodOfTime}
                     />
@@ -162,14 +156,10 @@ export default function Account() {
             open={addTransactionOpen}
             setOpen={setAddTransactionOpen}
             transactionType={transactionType}
-            accountList={accountList}
-            selectedAccount={selectedAccount}
           />
           <AddTransferDialog
             open={addTransferOpen}
             setOpen={setAddTransferOpen}
-            accountList={accountList}
-            selectedAccount={selectedAccount}
           />
         </Box>
       )}

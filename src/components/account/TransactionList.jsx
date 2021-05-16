@@ -2,74 +2,61 @@ import { List } from "@material-ui/core";
 import TransactionItem from "./TransactionItem";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import EventIcon from "@material-ui/icons/Event";
-import moment from "moment";
-import _ from "lodash";
+import { filterTransactionsByDate, format } from "../../utils/dateUtil";
+import {
+  getIncome,
+  getOutcome,
+  sortGrouped,
+} from "../../utils/transactionUtil";
+import { useTransactionList } from "../../providers/TransactionListProvider";
 
-export default function TransactionList({
-  transactionList,
-  sortBy,
-  date,
-  periodOfTime,
-}) {
-  const getPeriod = () => {
-    if (periodOfTime === "w") return "isoWeek";
-    if (periodOfTime === "M") return "month";
-    return "year";
-  };
-
-  const getByTransactionType = (transactionTypes) => {
-    const filteredByDate = transactionList.filter((transaction) =>
-      moment(transaction.date).isSame(moment(date), getPeriod())
-    );
-
-    return filteredByDate.filter((transaction) =>
-      transactionTypes.includes(transaction.transactionType)
-    );
-  };
-
-  const getSortByList = (transactionList) => {
-    const sortByList = _.orderBy(
-      _.groupBy(transactionList, sortBy),
-      [(item) => _.sumBy(item, "value")],
-      "desc"
-    );
-    return _.map(sortByList, (x) => _.orderBy(x, "value", "desc"));
-  };
+export default function TransactionList({ sortBy, date, periodOfTime }) {
+  const { transactionList } = useTransactionList();
 
   const getIcon = () =>
     sortBy === "category" ? <FolderOpenIcon /> : <EventIcon />;
 
   const getHeader = (transactionItem) =>
     sortBy === "date"
-      ? moment(transactionItem[0].date).format("dddd, MMMM Do YYYY")
+      ? format(transactionItem[0].date)
       : transactionItem[0].category;
 
   return (
     <List>
-      {getSortByList(getByTransactionType(["INCOME", "TRANSFER-INCOME"])).map(
-        (transactionItem) => (
-          <TransactionItem
-            key={transactionItem[0][sortBy] + "INCOME"}
-            type="INCOME"
-            icon={getIcon()}
-            transactionList={transactionItem}
-            sortBy={sortBy}
-            header={getHeader(transactionItem)}
-          />
-        )
-      )}
-      {getSortByList(getByTransactionType(["OUTCOME", "TRANSFER-OUTCOME"])).map(
-        (transactionItem) => (
-          <TransactionItem
-            key={transactionItem[0][sortBy] + "OUTCOME"}
-            type="OUTCOME"
-            icon={getIcon()}
-            transactionList={transactionItem}
-            sortBy={sortBy}
-            header={getHeader(transactionItem)}
-          />
-        )
-      )}
+      {sortGrouped(
+        filterTransactionsByDate(
+          getIncome(transactionList),
+          date,
+          periodOfTime
+        ),
+        sortBy
+      ).map((transactionItem) => (
+        <TransactionItem
+          key={transactionItem[0][sortBy] + "INCOME"}
+          type="INCOME"
+          icon={getIcon()}
+          transactionList={transactionItem}
+          sortBy={sortBy}
+          header={getHeader(transactionItem)}
+        />
+      ))}
+      {sortGrouped(
+        filterTransactionsByDate(
+          getOutcome(transactionList),
+          date,
+          periodOfTime
+        ),
+        sortBy
+      ).map((transactionItem) => (
+        <TransactionItem
+          key={transactionItem[0][sortBy] + "OUTCOME"}
+          type="OUTCOME"
+          icon={getIcon()}
+          transactionList={transactionItem}
+          sortBy={sortBy}
+          header={getHeader(transactionItem)}
+        />
+      ))}
     </List>
   );
 }
