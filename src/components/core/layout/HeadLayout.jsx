@@ -2,11 +2,7 @@ import { useState } from "react";
 import LeftDrawer from "./LeftDrawer";
 import Nav from "./Nav";
 
-export default function HeadLayout({
-  navItems,
-  currentNavItem,
-  setCurrentNavItem,
-}) {
+export default function HeadLayout({ navItems }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleDrawerClose = () => {
@@ -24,12 +20,7 @@ export default function HeadLayout({
         handleDrawerClose={handleDrawerClose}
         handleDrawerOpen={handleDrawerOpen}
       />
-      <LeftDrawer
-        drawerOpen={drawerOpen}
-        items={navItems}
-        currentItem={currentNavItem}
-        setCurrentItem={setCurrentNavItem}
-      />
+      <LeftDrawer drawerOpen={drawerOpen} items={navItems} />
     </>
   );
 }

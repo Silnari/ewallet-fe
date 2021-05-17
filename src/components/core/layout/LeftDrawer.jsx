@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
+import { useHistory, useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -45,13 +46,11 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export default function LeftDrawer({
-  drawerOpen,
-  items,
-  currentItem,
-  setCurrentItem,
-}) {
+export default function LeftDrawer({ drawerOpen, items }) {
   const classes = useStyle();
+  const history = useHistory();
+  const { pathname } = useLocation();
+  const currentPage = pathname.substring(1);
 
   return (
     <Drawer
@@ -77,9 +76,9 @@ export default function LeftDrawer({
         {Object.entries(items).map(([key, item]) => (
           <ListItem
             button
-            onClick={() => setCurrentItem(key)}
+            onClick={() => history.push(key)}
             key={key}
-            selected={currentItem === key}
+            selected={key === currentPage}
           >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.title} />

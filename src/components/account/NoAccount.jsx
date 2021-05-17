@@ -16,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const goToAccounts = () => {};
-
 export default function NoAccount() {
   const classes = useStyles();
 
@@ -26,7 +24,7 @@ export default function NoAccount() {
       <InfoIcon fontSize="large" className={classes.tabName} />
       <Typography variant="h6">
         Please add your first account in{" "}
-        <Link className={classes.tabName} onClick={goToAccounts()}>
+        <Link to="/manageAccount" className={classes.tabName}>
           Manage accounts
         </Link>{" "}
         tab
