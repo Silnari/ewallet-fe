@@ -57,16 +57,20 @@ export default function DatePicker({
   return (
     <Grid container direction="column" spacing={1}>
       <Grid item>
-        <Select
-          id="period-of-time"
-          value={periodOfTime}
-          onChange={handlePeriodOfTimeChange}
-          className={classes.datePicker}
-        >
-          <MenuItem value={"w"}>Week</MenuItem>
-          <MenuItem value={"M"}>Month</MenuItem>
-          <MenuItem value={"y"}>Year</MenuItem>
-        </Select>
+        {setPeriodOfTime ? (
+          <Select
+            id="period-of-time"
+            value={periodOfTime}
+            onChange={handlePeriodOfTimeChange}
+            className={classes.datePicker}
+          >
+            <MenuItem value={"w"}>Week</MenuItem>
+            <MenuItem value={"M"}>Month</MenuItem>
+            <MenuItem value={"y"}>Year</MenuItem>
+          </Select>
+        ) : (
+          <></>
+        )}
       </Grid>
       <Grid item>
         <Grid container direction="row" alignItems="center" justify="center">

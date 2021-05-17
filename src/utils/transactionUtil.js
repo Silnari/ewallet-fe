@@ -1,4 +1,6 @@
 import _ from "lodash";
+import moment from "moment";
+import { getPeriod, months } from "./dateUtil";
 
 export const getIncome = (transactionList) =>
   getByTransactionType(transactionList, ["INCOME", "TRANSFER-INCOME"]);
@@ -32,4 +34,29 @@ export const sortGrouped = (transactionList, groupBy) => {
     "desc"
   );
   return _.map(grouped, (t) => _.orderBy(t, "value", "desc"));
+};
+
+export const filterTransactionsByDate = (transactionList, date, periodOfTime) =>
+  transactionList.filter((transaction) =>
+    moment(transaction.date).isSame(moment(date), getPeriod(periodOfTime))
+  );
+
+export const groupByMonth = (transactionList, category) => {
+  const grouped = _.groupBy(
+    transactionList.filter((t) => t.category === category),
+    (transaction) => moment(transaction.date).startOf("month").format("MMMM")
+  );
+
+  const groupedArr = [];
+  months.forEach((month) => {
+    groupedArr.push({
+      category,
+      month,
+      value: grouped[month] && Math.abs(getSum(grouped[month])),
+    });
+  });
+
+  return groupedArr.sort(
+    (a, b) => months.indexOf(a.month) - months.indexOf(b.month)
+  );
 };

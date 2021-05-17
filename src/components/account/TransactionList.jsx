@@ -2,10 +2,11 @@ import { List } from "@material-ui/core";
 import TransactionItem from "./TransactionItem";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import EventIcon from "@material-ui/icons/Event";
-import { filterTransactionsByDate, format } from "../../utils/dateUtil";
+import { format } from "../../utils/dateUtil";
 import {
   getIncome,
   getOutcome,
+  filterTransactionsByDate,
   sortGrouped,
 } from "../../utils/transactionUtil";
 import { useTransactionList } from "../../providers/TransactionListProvider";

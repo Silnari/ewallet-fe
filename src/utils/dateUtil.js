@@ -1,6 +1,21 @@
 import moment from "moment";
 
-const getPeriod = (periodOfTime) => {
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+export const getPeriod = (periodOfTime) => {
   if (periodOfTime === "w") return "isoWeek";
   if (periodOfTime === "M") return "month";
   return "year";
@@ -38,8 +53,3 @@ export const substractFromDate = (date, periodOfTime) => {
 
 export const isNextAvaible = (date, periodOfTime) =>
   moment(new Date()).isSame(moment(addToDate(date, periodOfTime)), "day");
-
-export const filterTransactionsByDate = (transactionList, date, periodOfTime) =>
-  transactionList.filter((transaction) =>
-    moment(transaction.date).isSame(moment(date), getPeriod(periodOfTime))
-  );

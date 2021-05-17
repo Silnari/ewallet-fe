@@ -1,6 +1,5 @@
 import { Box, Grid, makeStyles, styled } from "@material-ui/core";
 import * as balance from "../../utils/transactionUtil";
-import { filterTransactionsByDate } from "../../utils/dateUtil";
 import { useTransactionList } from "../../providers/TransactionListProvider";
 import { useAccountList } from "../../providers/AccountListProvider";
 import LabelledOutline from "../core/LabelledOutline";
@@ -34,7 +33,7 @@ export default function Balance({ date, periodOfTime }) {
   const { transactionList } = useTransactionList();
   const { selectedAccount } = useAccountList();
 
-  const filteredTransactionList = filterTransactionsByDate(
+  const filteredTransactionList = balance.filterTransactionsByDate(
     transactionList,
     date,
     periodOfTime

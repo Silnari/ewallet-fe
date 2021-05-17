@@ -16,15 +16,15 @@ const pages = {
     icon: <LocalAtmIcon />,
     title: "Account page",
   },
-  manageAccount: {
-    body: <ManageAccount />,
-    icon: <AccountBalanceWalletIcon />,
-    title: "Manage accounts",
-  },
   accountStats: {
     body: <AccountStats />,
     icon: <AssessmentIcon />,
     title: "Account stats",
+  },
+  manageAccount: {
+    body: <ManageAccount />,
+    icon: <AccountBalanceWalletIcon />,
+    title: "Manage accounts",
   },
 };
 
