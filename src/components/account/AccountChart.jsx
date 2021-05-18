@@ -137,9 +137,10 @@ export default function AccountChart({ date, periodOfTime }) {
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
         dataKey="value"
-        innerRadius={70}
-        outerRadius={120}
+        innerRadius={75}
+        outerRadius={125}
         onMouseEnter={onPieEnter}
+        paddingAngle={1}
       >
         {data.map((entry, index) => (
           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
