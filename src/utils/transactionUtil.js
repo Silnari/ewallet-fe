@@ -41,22 +41,36 @@ export const filterTransactionsByDate = (transactionList, date, periodOfTime) =>
     moment(transaction.date).isSame(moment(date), getPeriod(periodOfTime))
   );
 
-export const groupByMonth = (transactionList, category) => {
+export const groupByMonth = (transactionList, categoryList) => {
   const grouped = _.groupBy(
-    transactionList.filter((t) => t.category === category),
+    transactionList.filter(
+      (t) =>
+        categoryList.includes(t.category) ||
+        (categoryList.includes("Income total") &&
+          t.transactionType === "INCOME") ||
+        (categoryList.includes("Outcome total") &&
+          t.transactionType === "OUTCOME")
+    ),
     (transaction) => moment(transaction.date).startOf("month").format("MMMM")
   );
 
   const groupedArr = [];
-  months.forEach((month) => {
-    groupedArr.push({
-      category,
-      month,
-      value: grouped[month] && Math.abs(getSum(grouped[month])),
+  months.forEach((month, index) => {
+    groupedArr.push({ month });
+    categoryList.forEach((category) => {
+      if (grouped[month]) {
+        if (category === "Income total")
+          groupedArr[index][category] = getIncomeSum(grouped[month]);
+        else if (category === "Outcome total")
+          groupedArr[index][category] = getOutcomeSum(grouped[month]);
+        else {
+          groupedArr[index][category] = Math.abs(
+            getSum(grouped[month].filter((t) => t.category === category))
+          );
+        }
+      }
     });
   });
 
-  return groupedArr.sort(
-    (a, b) => months.indexOf(a.month) - months.indexOf(b.month)
-  );
+  return groupedArr;
 };
