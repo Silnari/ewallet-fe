@@ -8,7 +8,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useAccountList } from "../../providers/AccountListProvider";
 import { useTransactionList } from "../../providers/TransactionListProvider";
 import {
   groupByMonth,
@@ -16,9 +15,7 @@ import {
 } from "../../utils/transactionUtil";
 
 export default function AccountChart({ date, categoryList }) {
-  const { setSelectedById } = useAccountList();
   const { transactionList } = useTransactionList();
-  setSelectedById(0);
 
   let incomeColor = 700;
   const getIncomeColor = () => {
@@ -64,7 +61,6 @@ export default function AccountChart({ date, categoryList }) {
         <XAxis dataKey="month" />
         <YAxis />
         <Tooltip />
-        <Legend verticalAlign="top" />
       </LineChart>
     </ResponsiveContainer>
   );

@@ -2,6 +2,7 @@ import { Box, Container, Grid, styled } from "@material-ui/core";
 import { useState } from "react";
 import DatePicker from "../components/account/DatePicker";
 import AccountChart from "../components/accountStats/AccountChart";
+import CategoryFilter from "../components/accountStats/CategoryFilter";
 import CategoryList from "../components/accountStats/CategoryList";
 import Loading from "../components/core/Loading";
 import { useAccountList } from "../providers/AccountListProvider";
@@ -19,8 +20,22 @@ export default function AccountStats() {
     "Outcome total^OUTCOME",
   ]);
   const [date, setDate] = useState(new Date());
+  const [searchCategoryText, setSearchCategoryText] = useState("");
   const { selectedAccount } = useAccountList();
-  const { isTransactionLoading } = useTransactionList();
+  const { transactionList, isTransactionLoading } = useTransactionList();
+  const categoryList = [
+    "Income total^INCOME",
+    "Outcome total^OUTCOME",
+    ...transactionList
+      .filter((t) => ["INCOME", "OUTCOME"].includes(t.transactionType))
+      .map(
+        (transaction) =>
+          `${transaction.category}^${
+            transaction.transactionType === "INCOME" ? "INCOME" : "OUTCOME"
+          }`
+      )
+      .filter((category, index, self) => self.indexOf(category) === index),
+  ].sort((a, b) => a.category - b.category);
 
   return (
     <Container maxWidth="md">
@@ -41,8 +56,17 @@ export default function AccountStats() {
                 </GraphBox>
               </Grid>
               <Grid item>
-                <CategoryList checked={checked} setChecked={setChecked} />
+                <CategoryFilter setSearchCategoryText={setSearchCategoryText} />
               </Grid>
+              <Grid item>
+                <CategoryList
+                  searchCategoryText={searchCategoryText}
+                  categoryList={categoryList}
+                  checked={checked}
+                  setChecked={setChecked}
+                />
+              </Grid>
+              <Grid item />
             </>
           )}
         </Grid>

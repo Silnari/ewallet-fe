@@ -51,7 +51,7 @@ export const groupByMonth = (transactionList, categoryList) => {
         (categoryList.includes("Outcome total") &&
           t.transactionType === "OUTCOME")
     ),
-    (transaction) => moment(transaction.date).startOf("month").format("MMMM")
+    (transaction) => moment(transaction.date).startOf("month").format("MMM")
   );
 
   const groupedArr = [];
