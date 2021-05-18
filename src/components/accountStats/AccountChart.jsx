@@ -1,6 +1,5 @@
 import { green, red } from "@material-ui/core/colors";
 import {
-  Legend,
   LineChart,
   Line,
   ResponsiveContainer,

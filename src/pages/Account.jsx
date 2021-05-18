@@ -22,6 +22,7 @@ import Balance from "../components/account/Balance";
 import AddTransferDialog from "../components/account/AddTransferDialog";
 import NoAccount from "../components/account/NoAccount";
 import AccountSelect from "../components/account/AccountSelect";
+import AccountChart from "../components/account/AccountChart";
 
 const useStyles = makeStyles((theme) => ({
   incomeButton: {
@@ -85,6 +86,9 @@ export default function Account() {
                 <>
                   <Grid item>
                     <Balance date={date} periodOfTime={periodOfTime} />
+                  </Grid>
+                  <Grid item>
+                    <AccountChart date={date} periodOfTime={periodOfTime} />
                   </Grid>
                   <Grid item>
                     <Box mt={1}>

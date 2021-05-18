@@ -41,6 +41,21 @@ export const filterTransactionsByDate = (transactionList, date, periodOfTime) =>
     moment(transaction.date).isSame(moment(date), getPeriod(periodOfTime))
   );
 
+export const groupByCategory = (transactionList) => {
+  const groupedArr = [];
+  const categoryList = [...new Set(transactionList.map((t) => t.category))];
+  categoryList.forEach((category) => {
+    groupedArr.push({
+      name: category,
+      value: getOutcomeSum(
+        transactionList.filter((t) => t.category === category)
+      ),
+    });
+  });
+
+  return groupedArr;
+};
+
 export const groupByMonth = (transactionList, categoryList) => {
   const grouped = _.groupBy(
     transactionList.filter(
