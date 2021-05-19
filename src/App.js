@@ -90,6 +90,9 @@ function App() {
                   <Route strict exact path="/">
                     <Redirect to="/account" />
                   </Route>
+                  <Route strict exact path="/login">
+                    <Redirect to="/account" />
+                  </Route>
                 </div>
               </div>
             </TransactionListProvider>

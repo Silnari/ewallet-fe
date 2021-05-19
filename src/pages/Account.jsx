@@ -21,7 +21,6 @@ import Loading from "../components/core/Loading";
 import Balance from "../components/account/Balance";
 import AddTransferDialog from "../components/account/AddTransferDialog";
 import NoAccount from "../components/account/NoAccount";
-import AccountSelect from "../components/account/AccountSelect";
 import AccountChart from "../components/account/AccountChart";
 
 const useStyles = makeStyles((theme) => ({
@@ -62,84 +61,82 @@ export default function Account() {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       {!selectedAccount ? (
         <Loading />
       ) : (
-        <Box display="flex">
-          <AccountSelect />
-          <Box>
-            <Grid container align="center" direction="column" spacing={2}>
-              <Grid item>
-                <DatePicker
-                  date={date}
-                  setDate={setDate}
-                  periodOfTime={periodOfTime}
-                  setPeriodOfTime={setPeriodOfTime}
-                />
-              </Grid>
-              {isTransactionLoading ? (
-                <Loading />
-              ) : accountList.length === 1 ? (
-                <NoAccount />
-              ) : (
-                <>
-                  <Grid item>
-                    <Balance date={date} periodOfTime={periodOfTime} />
-                  </Grid>
-                  <Grid item>
-                    <AccountChart date={date} periodOfTime={periodOfTime} />
-                  </Grid>
-                  <Grid item>
-                    <Box mt={1}>
-                      <IconButton
-                        className={classes.incomeButton}
-                        onClick={() => addTransaction("INCOME")}
-                      >
-                        <AddCircleOutlineRoundedIcon fontSize="large" />
-                      </IconButton>
-                      <IconButton
-                        color="inherit"
-                        onClick={() => setAddTransferOpen(true)}
-                      >
-                        <LoopRoundedIcon fontSize="large" />
-                      </IconButton>
-                      <IconButton
-                        className={classes.outcomeButton}
-                        onClick={() => addTransaction("OUTCOME")}
-                      >
-                        <RemoveCircleOutlineOutlinedIcon fontSize="large" />
-                      </IconButton>
-                    </Box>
-                  </Grid>
-                  <Grid item>
-                    <Box
-                      display="flex"
-                      flexDirection="row"
-                      justifyContent="flex-end"
-                      alignItems="center"
-                    >
-                      <Typography>Group by {sortBy}&nbsp;</Typography>
-                      <IconButton
-                        className={classes.sortButton}
-                        size="small"
-                        onClick={() =>
-                          setSortBy(sortBy === "date" ? "category" : "date")
-                        }
-                      >
-                        {sortBy === "date" ? <FolderOpenIcon /> : <EventIcon />}
-                      </IconButton>
-                    </Box>
-                    <TransactionList
-                      sortBy={sortBy}
-                      date={date}
-                      periodOfTime={periodOfTime}
-                    />
-                  </Grid>{" "}
-                </>
-              )}
+        <>
+          <Grid container align="center" direction="column" spacing={2}>
+            <Grid item>
+              <DatePicker
+                date={date}
+                setDate={setDate}
+                periodOfTime={periodOfTime}
+                setPeriodOfTime={setPeriodOfTime}
+              />
             </Grid>
-          </Box>
+            {isTransactionLoading ? (
+              <Loading />
+            ) : accountList.length === 1 ? (
+              <NoAccount />
+            ) : (
+              <>
+                <Grid item>
+                  <Balance date={date} periodOfTime={periodOfTime} />
+                </Grid>
+                <Grid item>
+                  <AccountChart date={date} periodOfTime={periodOfTime} />
+                </Grid>
+                <Grid item>
+                  <Box mt={1}>
+                    <IconButton
+                      className={classes.incomeButton}
+                      onClick={() => addTransaction("INCOME")}
+                    >
+                      <AddCircleOutlineRoundedIcon fontSize="large" />
+                    </IconButton>
+                    <IconButton
+                      color="inherit"
+                      onClick={() => setAddTransferOpen(true)}
+                    >
+                      <LoopRoundedIcon fontSize="large" />
+                    </IconButton>
+                    <IconButton
+                      className={classes.outcomeButton}
+                      onClick={() => addTransaction("OUTCOME")}
+                    >
+                      <RemoveCircleOutlineOutlinedIcon fontSize="large" />
+                    </IconButton>
+                  </Box>
+                </Grid>
+                <Grid item>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                  >
+                    <Typography>Group by {sortBy}&nbsp;</Typography>
+                    <IconButton
+                      className={classes.sortButton}
+                      size="small"
+                      onClick={() =>
+                        setSortBy(sortBy === "date" ? "category" : "date")
+                      }
+                    >
+                      {sortBy === "date" ? <FolderOpenIcon /> : <EventIcon />}
+                    </IconButton>
+                  </Box>
+                  <TransactionList
+                    sortBy={sortBy}
+                    date={date}
+                    periodOfTime={periodOfTime}
+                  />
+                </Grid>{" "}
+              </>
+            )}
+          </Grid>
+
           <AddTransactionDialog
             open={addTransactionOpen}
             setOpen={setAddTransactionOpen}
@@ -149,7 +146,7 @@ export default function Account() {
             open={addTransferOpen}
             setOpen={setAddTransferOpen}
           />
-        </Box>
+        </>
       )}
     </Container>
   );

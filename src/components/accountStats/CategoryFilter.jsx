@@ -8,6 +8,7 @@ export default function CategoryFilter({ setSearchCategoryText }) {
   return (
     <Container maxWidth="xs">
       <TextField
+        style={{ backgroundColor: "#fff" }}
         fullWidth
         label="Search category"
         margin="normal"

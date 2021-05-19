@@ -8,7 +8,6 @@ import {
   pink,
   purple,
   red,
-  teal,
 } from "@material-ui/core/colors";
 import { useCallback, useState } from "react";
 import { Cell, Pie, PieChart, Sector } from "recharts";
@@ -24,7 +23,6 @@ const COLORS = [
   purple[500],
   indigo[500],
   blue[500],
-  teal[500],
   lightGreen[500],
   green[500],
   amber[500],
@@ -65,6 +63,7 @@ const renderActiveShape = (props) => {
         textAnchor="middle"
         fill={fill}
         fontWeight="bold"
+        fontSize="17px"
       >
         {payload.name}
       </text>
@@ -125,12 +124,7 @@ export default function AccountChart({ date, periodOfTime }) {
     filterTransactionsByDate(transactionList, date, periodOfTime)
   );
 
-  console.log(
-    groupByCategory(
-      filterTransactionsByDate(transactionList, date, periodOfTime)
-    )
-  );
-  return (
+  return data.length !== 0 ? (
     <PieChart width={500} height={350}>
       <Pie
         data={data}
@@ -147,5 +141,7 @@ export default function AccountChart({ date, periodOfTime }) {
         ))}
       </Pie>
     </PieChart>
+  ) : (
+    <></>
   );
 }

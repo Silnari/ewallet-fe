@@ -11,7 +11,7 @@ import { useTransactionList } from "../providers/TransactionListProvider";
 const GraphBox = styled(Box)({
   backgroundColor: "#fff",
   borderRadius: 20,
-  padding: "8px 28px 8px 8px",
+  padding: "18px 28px 8px 8px",
 });
 
 export default function AccountStats() {
@@ -35,7 +35,7 @@ export default function AccountStats() {
           }`
       )
       .filter((category, index, self) => self.indexOf(category) === index),
-  ].sort((a, b) => a.category - b.category);
+  ];
 
   return (
     <Container maxWidth="md">

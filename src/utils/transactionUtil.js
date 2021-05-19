@@ -45,11 +45,13 @@ export const groupByCategory = (transactionList) => {
   const groupedArr = [];
   const categoryList = [...new Set(transactionList.map((t) => t.category))];
   categoryList.forEach((category) => {
+    const outcomeSum = getOutcomeSum(
+      transactionList.filter((t) => t.category === category)
+    );
+    if (outcomeSum <= 0) return;
     groupedArr.push({
       name: category,
-      value: getOutcomeSum(
-        transactionList.filter((t) => t.category === category)
-      ),
+      value: outcomeSum,
     });
   });
 

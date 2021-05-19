@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Box,
   Fade,
   IconButton,
   Toolbar,
@@ -10,6 +11,7 @@ import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import { useAuth } from "../../../providers/AuthProvider";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import AccountSelect from "../AccountSelect";
 
 const drawerWidth = 240;
 
@@ -32,7 +34,7 @@ const useStyle = makeStyles((theme) => ({
   menuButton: {
     marginRight: 36,
   },
-  logoutButton: {
+  navEnd: {
     marginLeft: "auto",
   },
 }));
@@ -66,13 +68,12 @@ export default function Nav({
             eWallet
           </Typography>
         </Fade>
-        <IconButton
-          color="inherit"
-          className={classes.logoutButton}
-          onClick={logOut}
-        >
-          <ExitToAppIcon />
-        </IconButton>
+        <Box display="flex" className={classes.navEnd}>
+          <AccountSelect />
+          <IconButton color="inherit" onClick={logOut}>
+            <ExitToAppIcon />
+          </IconButton>
+        </Box>
       </Toolbar>
     </AppBar>
   );
